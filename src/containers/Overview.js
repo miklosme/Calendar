@@ -67,8 +67,6 @@ let Overview = ({ appointments }) => {
     .reduce(createGroupper(), [])
     .map(calculateGaps());
 
-  console.log(appointmentsGroupedByOverlap);
-
   return (
     <div className="overview">
       <header>{today}</header>
