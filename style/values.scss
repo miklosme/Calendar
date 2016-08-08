@@ -12,3 +12,7 @@ $border-radius: 4px;
 $border-radius-small: 1px;
 
 $input-height: 35px;
+
+$time-node-base: 18px;
+$time-node-gap: $margin * 1.8;
+$time-node-height: $time-node-base + $time-node-gap;

@@ -21,7 +21,12 @@ module.exports = {
         }
       },
       {
+        test: /values\.scss$/,
+        loader: 'sass-to-js-var'
+      },
+      {
         test: /\.scss$/,
+        exclude: /values\.scss$/,
         loader: 'style!css!autoprefixer!sass'
       },
       {

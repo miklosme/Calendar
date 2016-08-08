@@ -4,6 +4,9 @@ import { TIME_RANGE_MIN, TIME_RANGE_MAX } from '../constants';
 import dateFormat from 'dateformat';
 import leftPad from 'left-pad'; // :D
 import Appointment from '../components/Appointment';
+import { timeNodeHeight } from '../../style/values.scss';
+
+const ONE_HOUR_HEIGHT = parseInt(timeNodeHeight, 10);
 
 const timeListLength = TIME_RANGE_MAX - TIME_RANGE_MIN + 1;
 const timeList = Array.from({ length: timeListLength }).map((_, index) => {
@@ -33,13 +36,32 @@ function createGroupper() {
   }
 }
 
+function calculateGaps() {
+  let previousEndTime = null;
+  return group => {
+    if (previousEndTime === null) {
+      previousEndTime = TIME_RANGE_MIN * 60;
+    }
+    const topGapTime = group[0].startTime - previousEndTime;
+    const topGapPixel = topGapTime / 60 * ONE_HOUR_HEIGHT;
+    previousEndTime = Math.max(...group.map(({ endTime }) => endTime));
+    return {
+      topGapPixel,
+      appointments: group,
+    }
+  }
+}
+
 let Overview = ({ appointments }) => {
   const now = new Date();
   const today = dateFormat(now, 'd mmmm yyyy').toLowerCase();
 
   const appointmentsGroupedByOverlap = appointments
     .sort(({ startTime: a }, { startTime: b }) => a - b)
-    .reduce(createGroupper(), []);
+    .reduce(createGroupper(), [])
+    .map(calculateGaps());
+
+  console.log(appointmentsGroupedByOverlap);
 
   return (
     <div className="overview">
@@ -49,9 +71,11 @@ let Overview = ({ appointments }) => {
           {timeList.map((text, index) => <li key={index}>{text}</li>)}
         </ul>
         <div className="appointment-container">
-          {appointmentsGroupedByOverlap.map((group, index) => (
-            <div key={index} className="appointment-group">
-              {group.map((data, index) => <Appointment key={index} {...data} />)}
+          {appointmentsGroupedByOverlap.map(({ appointments, topGapPixel }, index) => (
+            <div key={index} className="appointment-group" style={{ marginTop: topGapPixel }}>
+              {appointments.map((data, index) => (
+                <Appointment key={index} {...data} marginTop={topGapPixel} />
+              ))}
             </div>
           ))}
         </div>
