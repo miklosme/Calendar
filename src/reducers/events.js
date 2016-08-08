@@ -1,13 +1,10 @@
 const events = (state = [], action) => {
   switch (action.type) {
     case 'ADD_EVENT':
+      const { id, title, startTime, endTime, description } = action;
       return [
         ...state,
-        {
-          id: action.id,
-          text: action.text,
-          completed: false,
-        }
+        { id, title, startTime, endTime, description }
       ];
     default:
       return state

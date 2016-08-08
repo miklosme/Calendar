@@ -9,7 +9,7 @@ module.exports = {
     publicPath: 'build/',
   },
   debug: true,
-  devtool: 'source-map',
+  devtool: PROD ? '' : 'source-map',
   module: {
     loaders: [
       {

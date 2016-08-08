@@ -90,6 +90,11 @@
 	  { store: store },
 	  _react2.default.createElement(_App2.default, null)
 	), document.getElementById('root'));
+	
+	window.clearStorage = function () {
+	  localStorage.removeItem(_constants.STORAGE_KEY);
+	  window.location.reload();
+	};
 
 /***/ },
 /* 1 */
@@ -31014,11 +31019,13 @@
 	
 	  switch (action.type) {
 	    case 'ADD_EVENT':
-	      return [].concat(_toConsumableArray(state), [{
-	        id: action.id,
-	        text: action.text,
-	        completed: false
-	      }]);
+	      var id = action.id;
+	      var title = action.title;
+	      var startTime = action.startTime;
+	      var endTime = action.endTime;
+	      var description = action.description;
+	
+	      return [].concat(_toConsumableArray(state), [{ id: id, title: title, startTime: startTime, endTime: endTime, description: description }]);
 	    default:
 	      return state;
 	  }
@@ -31040,9 +31047,9 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _Appointments = __webpack_require__(497);
+	var _Overview = __webpack_require__(510);
 	
-	var _Appointments2 = _interopRequireDefault(_Appointments);
+	var _Overview2 = _interopRequireDefault(_Overview);
 	
 	var _Editor = __webpack_require__(501);
 	
@@ -31062,7 +31069,7 @@
 	    _react2.default.createElement(
 	      'div',
 	      { className: 'calendar-body' },
-	      _react2.default.createElement(_Appointments2.default, null),
+	      _react2.default.createElement(_Overview2.default, null),
 	      _react2.default.createElement(_Editor2.default, null)
 	    )
 	  );
@@ -31071,87 +31078,7 @@
 	exports.default = App;
 
 /***/ },
-/* 497 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _react = __webpack_require__(298);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _reactRedux = __webpack_require__(471);
-	
-	var _constants = __webpack_require__(498);
-	
-	var _leftPad = __webpack_require__(500);
-	
-	var _leftPad2 = _interopRequireDefault(_leftPad);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	// :D
-	
-	var timeListLength = _constants.TIME_RANGE_MAX - _constants.TIME_RANGE_MIN + 1;
-	var timeList = Array.from({ length: timeListLength }).map(function (_, index) {
-	  var hour = _constants.TIME_RANGE_MIN + index;
-	  return (0, _leftPad2.default)(hour, 2, 0) + ':00';
-	});
-	
-	var Appointments = function Appointments(_ref) {
-	  var events = _ref.events;
-	
-	  return _react2.default.createElement(
-	    'div',
-	    { className: 'appointments' },
-	    _react2.default.createElement(
-	      'header',
-	      null,
-	      '1 augustus 2016'
-	    ),
-	    _react2.default.createElement(
-	      'article',
-	      null,
-	      _react2.default.createElement(
-	        'ul',
-	        null,
-	        timeList.map(function (text, index) {
-	          return _react2.default.createElement(
-	            'li',
-	            { key: index },
-	            text
-	          );
-	        })
-	      )
-	    )
-	  );
-	};
-	
-	var mapStateToProps = function mapStateToProps(_ref2) {
-	  var events = _ref2.events;
-	
-	  return {
-	    events: events
-	  };
-	};
-	
-	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-	  return {
-	    onTodoClick: function onTodoClick(id) {
-	      //dispatch(toggleTodo(id))
-	    }
-	  };
-	};
-	
-	Appointments = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Appointments);
-	
-	exports.default = Appointments;
-
-/***/ },
+/* 497 */,
 /* 498 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -31432,7 +31359,7 @@
 	var content = __webpack_require__(504);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(507)(content, {});
+	var update = __webpack_require__(508)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -31457,7 +31384,7 @@
 	
 	
 	// module
-	exports.push([module.id, "html, body, ul, ol {\n  margin: 0;\n  padding: 0; }\n\nul, ol {\n  list-style: none; }\n\n@font-face {\n  font-family: 'OpenSans';\n  font-style: normal;\n  font-weight: 300;\n  src: url(" + __webpack_require__(506) + ") format(\"truetype\"); }\n\nbody {\n  background: #4a526f;\n  font-family: 'OpenSans', sans-serif; }\n\n.calendar-app {\n  margin: 0 auto;\n  padding: 12px;\n  width: 780px; }\n  .calendar-app > h1 {\n    color: white;\n    font-size: 29px;\n    letter-spacing: 1px;\n    margin-bottom: 30px; }\n  .calendar-app .calendar-body {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex; }\n\n.appointments {\n  border-radius: 4px;\n  background: white;\n  color: #111;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  -webkit-box-flex: 5;\n      -ms-flex: 5;\n          flex: 5;\n  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.13), 0 18px 30px 0 rgba(0, 0, 0, 0.13);\n  z-index: 100; }\n  .appointments > header {\n    border-bottom: 1px solid #e7e7e7;\n    font-size: 20px;\n    padding: 16.8px 39px;\n    letter-spacing: 0.3px; }\n  .appointments > article {\n    padding: 12px;\n    color: #dadada; }\n    .appointments > article ul {\n      margin-left: 30px;\n      font-size: 12px; }\n      .appointments > article ul li {\n        margin-bottom: 36px;\n        background: white; }\n        .appointments > article ul li::after {\n          border-bottom: 1px solid #dadada;\n          content: '';\n          position: relative;\n          top: -9px;\n          left: 41px;\n          width: 85%;\n          display: block; }\n\n.editor {\n  border-bottom-right-radius: 4px;\n  border-top-right-radius: 4px;\n  background: #f8f8f8;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-flex: 2;\n      -ms-flex: 2;\n          flex: 2;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  padding: 12px;\n  margin: 20px 0; }\n  .editor label {\n    margin: 9px 13px 0 7px;\n    font-size: 14px;\n    letter-spacing: 0.3px; }\n    .editor label.narrow {\n      margin-right: 50px; }\n  .editor input, .editor textarea {\n    width: 100%;\n    border: 1px solid #dadada;\n    border-radius: 1px;\n    font-size: 20px;\n    color: #777777;\n    margin-top: 5px;\n    padding: 1px 5px; }\n  .editor input {\n    height: 35px; }\n  .editor input[type=\"time\"] {\n    padding-left: 40px;\n    background: url(" + __webpack_require__(508) + ") white no-repeat 10px; }\n  .editor textarea {\n    resize: none;\n    height: 105px; }\n  .editor input, .editor button, .editor textarea {\n    outline: 0; }\n    .editor input:focus, .editor button:focus, .editor textarea:focus {\n      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); }\n  .editor button {\n    padding: 12px;\n    margin: 8px 7px -4px;\n    border-radius: 4px;\n    font-size: 13px;\n    text-decoration: none;\n    cursor: pointer;\n    border: none;\n    letter-spacing: 0.3px;\n    -webkit-transition: background-color 0.1s;\n    transition: background-color 0.1s; }\n    .editor button[type=\"submit\"] {\n      background: #20c576;\n      color: white; }\n      .editor button[type=\"submit\"]:active {\n        background: #19995c; }\n    .editor button[type=\"reset\"] {\n      background: #dadada;\n      color: #111; }\n      .editor button[type=\"reset\"]:active {\n        background: #c1c1c1; }\n", ""]);
+	exports.push([module.id, "html, body, ul, ol {\n  margin: 0;\n  padding: 0; }\n\nul, ol {\n  list-style: none; }\n\n@font-face {\n  font-family: 'OpenSans';\n  font-style: normal;\n  font-weight: 300;\n  src: url(" + __webpack_require__(506) + ") format(\"truetype\"); }\n\nbody {\n  background: #4a526f;\n  font-family: 'OpenSans', sans-serif; }\n\n.calendar-app {\n  margin: 0 auto;\n  padding: 12px;\n  width: 780px; }\n  .calendar-app > h1 {\n    color: white;\n    font-size: 29px;\n    letter-spacing: 1px;\n    margin-bottom: 30px; }\n  .calendar-app .calendar-body {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex; }\n\n.overview {\n  border-radius: 4px;\n  background: white;\n  color: #111;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  -webkit-box-flex: 5;\n      -ms-flex: 5;\n          flex: 5;\n  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.13), 0 18px 30px 0 rgba(0, 0, 0, 0.13);\n  z-index: 100; }\n  .overview > header {\n    border-bottom: 1px solid #e7e7e7;\n    font-size: 20px;\n    padding: 16.8px 39px;\n    letter-spacing: 0.3px; }\n  .overview > article {\n    padding: 12px;\n    color: #dadada;\n    position: relative; }\n    .overview > article .appointment-container {\n      position: absolute;\n      top: 0;\n      width: 77%;\n      left: 86px; }\n    .overview > article ul {\n      margin-left: 30px;\n      font-size: 12px; }\n      .overview > article ul li {\n        margin-bottom: 36px;\n        background: white; }\n        .overview > article ul li::after {\n          border-bottom: 1px solid #dadada;\n          content: '';\n          position: relative;\n          top: -9px;\n          left: 41px;\n          width: 85%;\n          display: block; }\n\n.editor {\n  border-bottom-right-radius: 4px;\n  border-top-right-radius: 4px;\n  background: #f8f8f8;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-flex: 2;\n      -ms-flex: 2;\n          flex: 2;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  padding: 12px;\n  margin: 20px 0; }\n  .editor label {\n    margin: 9px 13px 0 7px;\n    font-size: 14px;\n    letter-spacing: 0.3px; }\n    .editor label.narrow {\n      margin-right: 50px; }\n  .editor input, .editor textarea {\n    width: 100%;\n    border: 1px solid #dadada;\n    border-radius: 1px;\n    font-size: 20px;\n    color: #777777;\n    margin-top: 5px;\n    padding: 1px 5px; }\n  .editor input {\n    height: 35px; }\n  .editor input[type=\"time\"] {\n    padding-left: 40px;\n    background: url(" + __webpack_require__(507) + ") white no-repeat 10px; }\n  .editor textarea {\n    resize: none;\n    height: 105px; }\n  .editor input, .editor button, .editor textarea {\n    outline: 0; }\n    .editor input:focus, .editor button:focus, .editor textarea:focus {\n      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); }\n  .editor button {\n    padding: 12px;\n    margin: 8px 7px -4px;\n    border-radius: 4px;\n    font-size: 13px;\n    text-decoration: none;\n    cursor: pointer;\n    border: none;\n    letter-spacing: 0.3px;\n    -webkit-transition: background-color 0.1s;\n    transition: background-color 0.1s; }\n    .editor button[type=\"submit\"] {\n      background: #20c576;\n      color: white; }\n      .editor button[type=\"submit\"]:active {\n        background: #19995c; }\n    .editor button[type=\"reset\"] {\n      background: #dadada;\n      color: #111; }\n      .editor button[type=\"reset\"]:active {\n        background: #c1c1c1; }\n\n.appointment {\n  background: #f65f52;\n  border-radius: 4px;\n  margin: 5px;\n  padding: 6px 12px;\n  margin-top: 155px;\n  max-height: 80px;\n  overflow: hidden;\n  position: relative; }\n  .appointment::after {\n    content: ' ';\n    box-shadow: 0 14px 10px 22px #f65f52;\n    display: block;\n    height: 5px;\n    position: absolute;\n    width: 100%;\n    bottom: -5px;\n    background: blue;\n    left: 0; }\n  .appointment h1 {\n    margin: 0;\n    font-size: 16px;\n    width: 70%;\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    float: left;\n    color: white; }\n  .appointment .time {\n    float: right; }\n  .appointment p.description {\n    margin: 5px 0; }\n", ""]);
 	
 	// exports
 
@@ -31526,6 +31453,12 @@
 
 /***/ },
 /* 507 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "resources/calendar.svg";
+
+/***/ },
+/* 508 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -31777,10 +31710,383 @@
 
 
 /***/ },
-/* 508 */
+/* 509 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__.p + "resources/calendar.svg";
+	var __WEBPACK_AMD_DEFINE_RESULT__;/*
+	 * Date Format 1.2.3
+	 * (c) 2007-2009 Steven Levithan <stevenlevithan.com>
+	 * MIT license
+	 *
+	 * Includes enhancements by Scott Trenda <scott.trenda.net>
+	 * and Kris Kowal <cixar.com/~kris.kowal/>
+	 *
+	 * Accepts a date, a mask, or a date and a mask.
+	 * Returns a formatted version of the given date.
+	 * The date defaults to the current date/time.
+	 * The mask defaults to dateFormat.masks.default.
+	 */
+	
+	(function(global) {
+	  'use strict';
+	
+	  var dateFormat = (function() {
+	      var token = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZWN]|'[^']*'|'[^']*'/g;
+	      var timezone = /\b(?:[PMCEA][SDP]T|(?:Pacific|Mountain|Central|Eastern|Atlantic) (?:Standard|Daylight|Prevailing) Time|(?:GMT|UTC)(?:[-+]\d{4})?)\b/g;
+	      var timezoneClip = /[^-+\dA-Z]/g;
+	  
+	      // Regexes and supporting functions are cached through closure
+	      return function (date, mask, utc, gmt) {
+	  
+	        // You can't provide utc if you skip other args (use the 'UTC:' mask prefix)
+	        if (arguments.length === 1 && kindOf(date) === 'string' && !/\d/.test(date)) {
+	          mask = date;
+	          date = undefined;
+	        }
+	  
+	        date = date || new Date;
+	  
+	        if(!(date instanceof Date)) {
+	          date = new Date(date);
+	        }
+	  
+	        if (isNaN(date)) {
+	          throw TypeError('Invalid date');
+	        }
+	  
+	        mask = String(dateFormat.masks[mask] || mask || dateFormat.masks['default']);
+	  
+	        // Allow setting the utc/gmt argument via the mask
+	        var maskSlice = mask.slice(0, 4);
+	        if (maskSlice === 'UTC:' || maskSlice === 'GMT:') {
+	          mask = mask.slice(4);
+	          utc = true;
+	          if (maskSlice === 'GMT:') {
+	            gmt = true;
+	          }
+	        }
+	  
+	        var _ = utc ? 'getUTC' : 'get';
+	        var d = date[_ + 'Date']();
+	        var D = date[_ + 'Day']();
+	        var m = date[_ + 'Month']();
+	        var y = date[_ + 'FullYear']();
+	        var H = date[_ + 'Hours']();
+	        var M = date[_ + 'Minutes']();
+	        var s = date[_ + 'Seconds']();
+	        var L = date[_ + 'Milliseconds']();
+	        var o = utc ? 0 : date.getTimezoneOffset();
+	        var W = getWeek(date);
+	        var N = getDayOfWeek(date);
+	        var flags = {
+	          d:    d,
+	          dd:   pad(d),
+	          ddd:  dateFormat.i18n.dayNames[D],
+	          dddd: dateFormat.i18n.dayNames[D + 7],
+	          m:    m + 1,
+	          mm:   pad(m + 1),
+	          mmm:  dateFormat.i18n.monthNames[m],
+	          mmmm: dateFormat.i18n.monthNames[m + 12],
+	          yy:   String(y).slice(2),
+	          yyyy: y,
+	          h:    H % 12 || 12,
+	          hh:   pad(H % 12 || 12),
+	          H:    H,
+	          HH:   pad(H),
+	          M:    M,
+	          MM:   pad(M),
+	          s:    s,
+	          ss:   pad(s),
+	          l:    pad(L, 3),
+	          L:    pad(Math.round(L / 10)),
+	          t:    H < 12 ? 'a'  : 'p',
+	          tt:   H < 12 ? 'am' : 'pm',
+	          T:    H < 12 ? 'A'  : 'P',
+	          TT:   H < 12 ? 'AM' : 'PM',
+	          Z:    gmt ? 'GMT' : utc ? 'UTC' : (String(date).match(timezone) || ['']).pop().replace(timezoneClip, ''),
+	          o:    (o > 0 ? '-' : '+') + pad(Math.floor(Math.abs(o) / 60) * 100 + Math.abs(o) % 60, 4),
+	          S:    ['th', 'st', 'nd', 'rd'][d % 10 > 3 ? 0 : (d % 100 - d % 10 != 10) * d % 10],
+	          W:    W,
+	          N:    N
+	        };
+	  
+	        return mask.replace(token, function (match) {
+	          if (match in flags) {
+	            return flags[match];
+	          }
+	          return match.slice(1, match.length - 1);
+	        });
+	      };
+	    })();
+	
+	  dateFormat.masks = {
+	    'default':               'ddd mmm dd yyyy HH:MM:ss',
+	    'shortDate':             'm/d/yy',
+	    'mediumDate':            'mmm d, yyyy',
+	    'longDate':              'mmmm d, yyyy',
+	    'fullDate':              'dddd, mmmm d, yyyy',
+	    'shortTime':             'h:MM TT',
+	    'mediumTime':            'h:MM:ss TT',
+	    'longTime':              'h:MM:ss TT Z',
+	    'isoDate':               'yyyy-mm-dd',
+	    'isoTime':               'HH:MM:ss',
+	    'isoDateTime':           'yyyy-mm-dd\'T\'HH:MM:sso',
+	    'isoUtcDateTime':        'UTC:yyyy-mm-dd\'T\'HH:MM:ss\'Z\'',
+	    'expiresHeaderFormat':   'ddd, dd mmm yyyy HH:MM:ss Z'
+	  };
+	
+	  // Internationalization strings
+	  dateFormat.i18n = {
+	    dayNames: [
+	      'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat',
+	      'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
+	    ],
+	    monthNames: [
+	      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+	      'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
+	    ]
+	  };
+	
+	function pad(val, len) {
+	  val = String(val);
+	  len = len || 2;
+	  while (val.length < len) {
+	    val = '0' + val;
+	  }
+	  return val;
+	}
+	
+	/**
+	 * Get the ISO 8601 week number
+	 * Based on comments from
+	 * http://techblog.procurios.nl/k/n618/news/view/33796/14863/Calculate-ISO-8601-week-and-year-in-javascript.html
+	 *
+	 * @param  {Object} `date`
+	 * @return {Number}
+	 */
+	function getWeek(date) {
+	  // Remove time components of date
+	  var targetThursday = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+	
+	  // Change date to Thursday same week
+	  targetThursday.setDate(targetThursday.getDate() - ((targetThursday.getDay() + 6) % 7) + 3);
+	
+	  // Take January 4th as it is always in week 1 (see ISO 8601)
+	  var firstThursday = new Date(targetThursday.getFullYear(), 0, 4);
+	
+	  // Change date to Thursday same week
+	  firstThursday.setDate(firstThursday.getDate() - ((firstThursday.getDay() + 6) % 7) + 3);
+	
+	  // Check if daylight-saving-time-switch occured and correct for it
+	  var ds = targetThursday.getTimezoneOffset() - firstThursday.getTimezoneOffset();
+	  targetThursday.setHours(targetThursday.getHours() - ds);
+	
+	  // Number of weeks between target Thursday and first Thursday
+	  var weekDiff = (targetThursday - firstThursday) / (86400000*7);
+	  return 1 + Math.floor(weekDiff);
+	}
+	
+	/**
+	 * Get ISO-8601 numeric representation of the day of the week
+	 * 1 (for Monday) through 7 (for Sunday)
+	 * 
+	 * @param  {Object} `date`
+	 * @return {Number}
+	 */
+	function getDayOfWeek(date) {
+	  var dow = date.getDay();
+	  if(dow === 0) {
+	    dow = 7;
+	  }
+	  return dow;
+	}
+	
+	/**
+	 * kind-of shortcut
+	 * @param  {*} val
+	 * @return {String}
+	 */
+	function kindOf(val) {
+	  if (val === null) {
+	    return 'null';
+	  }
+	
+	  if (val === undefined) {
+	    return 'undefined';
+	  }
+	
+	  if (typeof val !== 'object') {
+	    return typeof val;
+	  }
+	
+	  if (Array.isArray(val)) {
+	    return 'array';
+	  }
+	
+	  return {}.toString.call(val)
+	    .slice(8, -1).toLowerCase();
+	};
+	
+	
+	
+	  if (true) {
+	    !(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
+	      return dateFormat;
+	    }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	  } else if (typeof exports === 'object') {
+	    module.exports = dateFormat;
+	  } else {
+	    global.dateFormat = dateFormat;
+	  }
+	})(this);
+
+
+/***/ },
+/* 510 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; // :D
+	
+	
+	var _react = __webpack_require__(298);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRedux = __webpack_require__(471);
+	
+	var _constants = __webpack_require__(498);
+	
+	var _dateformat = __webpack_require__(509);
+	
+	var _dateformat2 = _interopRequireDefault(_dateformat);
+	
+	var _leftPad = __webpack_require__(500);
+	
+	var _leftPad2 = _interopRequireDefault(_leftPad);
+	
+	var _Appointment = __webpack_require__(511);
+	
+	var _Appointment2 = _interopRequireDefault(_Appointment);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var timeListLength = _constants.TIME_RANGE_MAX - _constants.TIME_RANGE_MIN + 1;
+	var timeList = Array.from({ length: timeListLength }).map(function (_, index) {
+	  var hour = _constants.TIME_RANGE_MIN + index;
+	  return (0, _leftPad2.default)(hour, 2, 0) + ':00';
+	});
+	
+	var Overview = function Overview(_ref) {
+	  var events = _ref.events;
+	
+	  var now = new Date();
+	  var today = (0, _dateformat2.default)(now, 'd mmmm yyyy').toLowerCase();
+	  return _react2.default.createElement(
+	    'div',
+	    { className: 'overview' },
+	    _react2.default.createElement(
+	      'header',
+	      null,
+	      today
+	    ),
+	    _react2.default.createElement(
+	      'article',
+	      null,
+	      _react2.default.createElement(
+	        'ul',
+	        null,
+	        timeList.map(function (text, index) {
+	          return _react2.default.createElement(
+	            'li',
+	            { key: index },
+	            text
+	          );
+	        })
+	      ),
+	      _react2.default.createElement(
+	        'div',
+	        { className: 'appointment-container' },
+	        events.map(function (event, index) {
+	          console.log(event);
+	          return _react2.default.createElement(_Appointment2.default, _extends({ key: index }, event));
+	        })
+	      )
+	    )
+	  );
+	};
+	
+	var mapStateToProps = function mapStateToProps(_ref2) {
+	  var events = _ref2.events;
+	
+	  return {
+	    events: events
+	  };
+	};
+	
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+	  return {
+	    onTodoClick: function onTodoClick(id) {
+	      //dispatch(toggleTodo(id))
+	    }
+	  };
+	};
+	
+	Overview = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Overview);
+	
+	exports.default = Overview;
+
+/***/ },
+/* 511 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(298);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Appointment = function Appointment(_ref) {
+	  var title = _ref.title;
+	  var startTime = _ref.startTime;
+	  var endTime = _ref.endTime;
+	  var description = _ref.description;
+	  return _react2.default.createElement(
+	    "div",
+	    { className: "appointment" },
+	    _react2.default.createElement(
+	      "h1",
+	      null,
+	      title
+	    ),
+	    _react2.default.createElement(
+	      "div",
+	      { className: "time" },
+	      startTime,
+	      " - ",
+	      endTime
+	    ),
+	    _react2.default.createElement("br", null),
+	    _react2.default.createElement(
+	      "p",
+	      { className: "description" },
+	      description
+	    )
+	  );
+	};
+	
+	exports.default = Appointment;
 
 /***/ }
 /******/ ]);

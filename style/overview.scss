@@ -1,6 +1,6 @@
 @import 'values.scss';
 
-.appointments {
+.overview {
   border-radius: $border-radius;
   background: white;
   color: $black;
@@ -20,6 +20,14 @@
   & > article {
     padding: $padding;
     color: $dark-gray;
+    position: relative;
+
+    .appointment-container {
+      position: absolute;
+      top: 0;
+      width: 77%;
+      left: 86px;
+    }
 
     ul {
       margin-left: $margin * 1.5;

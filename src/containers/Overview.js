@@ -1,7 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { TIME_RANGE_MIN, TIME_RANGE_MAX } from '../constants';
+import dateFormat from 'dateformat';
 import leftPad from 'left-pad'; // :D
+import Appointment from '../components/Appointment';
 
 const timeListLength = TIME_RANGE_MAX - TIME_RANGE_MIN + 1;
 const timeList = Array.from({ length: timeListLength }).map((_, index) => {
@@ -9,14 +11,22 @@ const timeList = Array.from({ length: timeListLength }).map((_, index) => {
   return `${leftPad(hour, 2, 0)}:00`;
 });
 
-let Appointments = ({ events }) => {
+let Overview = ({ events }) => {
+  const now = new Date();
+  const today = dateFormat(now, 'd mmmm yyyy').toLowerCase();
   return (
-    <div className="appointments">
-      <header>1 augustus 2016</header>
+    <div className="overview">
+      <header>{today}</header>
       <article>
         <ul>
           {timeList.map((text, index) => <li key={index}>{text}</li>)}
         </ul>
+        <div className="appointment-container">
+          {events.map((event, index) => {
+            console.log(event);
+            return <Appointment key={index} {...event} />
+          })}
+        </div>
       </article>
     </div>
   );
@@ -36,9 +46,9 @@ const mapDispatchToProps = (dispatch) => {
   }
 };
 
-Appointments = connect(
+Overview = connect(
   mapStateToProps,
   mapDispatchToProps
-)(Appointments);
+)(Overview);
 
-export default Appointments;
+export default Overview;
