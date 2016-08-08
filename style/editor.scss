@@ -1,0 +1,66 @@
+@import 'values.scss';
+
+.editor {
+  border-bottom-right-radius: $border-radius;
+  border-top-right-radius: $border-radius;
+  background: $light-gray;
+  display: flex;
+  flex: 2;
+  flex-direction: column;
+  padding: $padding;
+  margin: $margin 0;
+
+  label {
+    margin: 9px 13px 0 7px;
+    font-size: 14px;
+    letter-spacing: 0.3px;
+
+    &.narrow {
+      margin-right: 50px;
+    }
+  }
+
+  input, textarea {
+    width: 100%;
+    border: 1px solid $dark-gray;
+    border-radius: $border-radius-small;
+    font-size: 20px;
+    color: lighten($black, 40%);
+    margin-top: 5px;
+  }
+
+  input {
+    height: $input-height;
+  }
+
+  input[type="time"] {
+    padding-left: 40px;
+    background: url('../resources/calendar.svg') white no-repeat 10px;
+  }
+
+  textarea {
+    resize: none;
+    height: $input-height * 3;
+  }
+
+  button {
+    padding: $padding;
+    margin: 8px 7px -4px;
+    border-radius: $border-radius;
+    font-size: 13px;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    letter-spacing: 0.3px;
+
+    &[type="submit"] {
+      background: $green;
+      color: white;
+    }
+
+    &[type="reset"] {
+      background: $dark-gray;
+      color: $black;
+    }
+  }
+}

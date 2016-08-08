@@ -7,6 +7,8 @@ import calendarApp from './reducers';
 import App from './components/App';
 import { STORAGE_KEY } from './constants';
 
+import '../style/index.scss';
+
 const localData = localStorage.getItem(STORAGE_KEY);
 const persistedState = localData ? JSON.parse(localData) : {};
 

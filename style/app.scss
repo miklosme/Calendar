@@ -1,0 +1,23 @@
+@import 'values.scss';
+
+body {
+  background: $blue;
+  font-family: 'OpenSans', sans-serif;
+}
+
+.calendar-app {
+  margin: 0 auto;
+  padding: $padding;
+  max-width: 780px;
+
+  & > h1 {
+    color: white;
+    font-size: 29px;
+    letter-spacing: 1px;
+    margin-bottom: 30px;
+  }
+
+  .calendar-body {
+    display: flex;
+  }
+}

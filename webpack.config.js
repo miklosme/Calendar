@@ -21,7 +21,7 @@ module.exports = {
         }
       },
       {
-        test: /\.scss/,
+        test: /\.scss$/,
         loader: 'style!css!autoprefixer!sass'
       },
       {

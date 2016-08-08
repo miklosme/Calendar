@@ -1,11 +1,14 @@
 import React from 'react';
-import AddEvent from '../containers/AddEvent';
-import Events from '../containers/Events';
+import Appointments from '../containers/Appointments';
+import Editor from '../containers/Editor';
 
 const App = () => (
-  <div>
-    <AddEvent />
-    <Events />
+  <div className="calendar-app" >
+    <h1>Today's appointments</h1>
+    <div className="calendar-body">
+      <Appointments />
+      <Editor />
+    </div>
   </div>
 );
 

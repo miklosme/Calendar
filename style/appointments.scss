@@ -1,0 +1,44 @@
+@import 'values.scss';
+
+.appointments {
+  border-radius: $border-radius;
+  background: white;
+  color: $black;
+  display: flex;
+  flex-direction: column;
+  flex: 5;
+  box-shadow: 0 0 4px 0 rgba(0,0,0,0.13), 0 18px 30px 0 rgba(0,0,0,0.13);
+  z-index: 100;
+
+  & > header {
+    border-bottom: 1px solid lighten($dark-gray, 5%);
+    font-size: 20px;
+    padding: $padding * 1.4 $padding * 3.25;
+    letter-spacing: 0.3px;
+  }
+
+  & > article {
+    padding: $padding;
+    color: $dark-gray;
+
+    ul {
+      margin-left: $margin * 1.5;
+      font-size: 12px;
+
+      li {
+        margin-bottom: $margin * 1.8;
+        background: white;
+
+        &::after {
+          border-bottom: 1px solid $dark-gray;
+          content: '';
+          position: relative;
+          top: -9px;
+          left: 41px;
+          width: 85%;
+          display: block;
+        }
+      }
+    }
+  }
+}
