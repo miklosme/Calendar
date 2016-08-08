@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import events from './events';
+import appointments from './appointments';
 
 const calendarApp = combineReducers({
-  events,
+  appointments,
 });
 
 export default calendarApp;

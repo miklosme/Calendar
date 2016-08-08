@@ -1,11 +1,13 @@
 import {ActionTypes as AT} from '../constants';
 
-export const addEvent = (event) => {
-  console.log(event);
-  const { title, startTime, endTime, description } = event;
+export const addAppointment = appointment => {
+  const { title, startTime, endTime, description } = appointment;
   return {
-    type: AT.ADD_EVENT,
+    type: AT.ADD_APPOINTMENT,
     id: Date.now(),
-    title, startTime, endTime, description,
+    title,
+    startTime,
+    endTime,
+    description,
   }
 };

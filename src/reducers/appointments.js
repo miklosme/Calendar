@@ -1,6 +1,8 @@
+import {ActionTypes as AT} from '../constants';
+
 const events = (state = [], action) => {
   switch (action.type) {
-    case 'ADD_EVENT':
+    case AT.ADD_APPOINTMENT:
       const { id, title, startTime, endTime, description } = action;
       return [
         ...state,

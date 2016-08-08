@@ -11,7 +11,7 @@ const timeList = Array.from({ length: timeListLength }).map((_, index) => {
   return `${leftPad(hour, 2, 0)}:00`;
 });
 
-let Overview = ({ events }) => {
+let Overview = ({ appointments }) => {
   const now = new Date();
   const today = dateFormat(now, 'd mmmm yyyy').toLowerCase();
   return (
@@ -22,9 +22,8 @@ let Overview = ({ events }) => {
           {timeList.map((text, index) => <li key={index}>{text}</li>)}
         </ul>
         <div className="appointment-container">
-          {events.map((event, index) => {
-            console.log(event);
-            return <Appointment key={index} {...event} />
+          {appointments.map((data, index) => {
+            return <Appointment key={index} {...data} />
           })}
         </div>
       </article>
@@ -32,9 +31,9 @@ let Overview = ({ events }) => {
   );
 };
 
-const mapStateToProps = ({ events }) => {
+const mapStateToProps = ({ appointments }) => {
   return {
-    events,
+    appointments,
   }
 };
 

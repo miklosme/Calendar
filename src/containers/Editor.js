@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { addEvent } from '../actions';
+import { addAppointment } from '../actions';
 
 let Editor = ({ dispatch }) => {
   const form = {};
@@ -26,7 +26,7 @@ let Editor = ({ dispatch }) => {
       return output;
     }, {});
 
-    dispatch(addEvent(formData));
+    dispatch(addAppointment(formData));
 
     formKeys.forEach(key => {
       form[key].value = '';
