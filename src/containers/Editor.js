@@ -11,13 +11,26 @@ let Editor = ({ dispatch }) => {
   const onSubmit = event => {
     event.preventDefault();
 
-    if (!form.title.value.trim()) {
+    const formKeys = Object.keys(form);
+
+    const isEveryFieldValid = formKeys.every(key => {
+      return form[key].value.trim() !== '';
+    });
+
+    if (!isEveryFieldValid) {
       return;
     }
 
-    dispatch(addEvent(form.title.value));
+    const formData = formKeys.reduce((output, key) => {
+      output[key] = form[key].value;
+      return output;
+    }, {});
 
-    form.title.value = '';
+    dispatch(addEvent(formData));
+
+    formKeys.forEach(key => {
+      form[key].value = '';
+    });
   };
 
   return (
@@ -33,12 +46,12 @@ let Editor = ({ dispatch }) => {
       <label className="narrow">
         Start time
         <br/>
-        <input type="time" ref={saveRef('start-time')} />
+        <input type="time" ref={saveRef('startTime')} />
       </label>
       <label className="narrow">
         End time
         <br/>
-        <input type="time" ref={saveRef('end-time')} />
+        <input type="time" ref={saveRef('endTime')} />
       </label>
       <label>
         Description

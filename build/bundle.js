@@ -31322,13 +31322,26 @@
 	  var onSubmit = function onSubmit(event) {
 	    event.preventDefault();
 	
-	    if (!form.title.value.trim()) {
+	    var formKeys = Object.keys(form);
+	
+	    var isEveryFieldValid = formKeys.every(function (key) {
+	      return form[key].value.trim() !== '';
+	    });
+	
+	    if (!isEveryFieldValid) {
 	      return;
 	    }
 	
-	    dispatch((0, _actions.addEvent)(form.title.value));
+	    var formData = formKeys.reduce(function (output, key) {
+	      output[key] = form[key].value;
+	      return output;
+	    }, {});
 	
-	    form.title.value = '';
+	    dispatch((0, _actions.addEvent)(formData));
+	
+	    formKeys.forEach(function (key) {
+	      form[key].value = '';
+	    });
 	  };
 	
 	  return _react2.default.createElement(
@@ -31349,14 +31362,14 @@
 	      { className: 'narrow' },
 	      'Start time',
 	      _react2.default.createElement('br', null),
-	      _react2.default.createElement('input', { type: 'time', ref: saveRef('start-time') })
+	      _react2.default.createElement('input', { type: 'time', ref: saveRef('startTime') })
 	    ),
 	    _react2.default.createElement(
 	      'label',
 	      { className: 'narrow' },
 	      'End time',
 	      _react2.default.createElement('br', null),
-	      _react2.default.createElement('input', { type: 'time', ref: saveRef('end-time') })
+	      _react2.default.createElement('input', { type: 'time', ref: saveRef('endTime') })
 	    ),
 	    _react2.default.createElement(
 	      'label',
@@ -31395,13 +31408,17 @@
 	
 	var _constants = __webpack_require__(498);
 	
-	var nextEventId = 0;
+	var addEvent = exports.addEvent = function addEvent(event) {
+	  console.log(event);
+	  var title = event.title;
+	  var startTime = event.startTime;
+	  var endTime = event.endTime;
+	  var description = event.description;
 	
-	var addEvent = exports.addEvent = function addEvent(text) {
 	  return {
 	    type: _constants.ActionTypes.ADD_EVENT,
-	    id: nextEventId++,
-	    text: text
+	    id: Date.now(),
+	    title: title, startTime: startTime, endTime: endTime, description: description
 	  };
 	};
 
@@ -31440,7 +31457,7 @@
 	
 	
 	// module
-	exports.push([module.id, "html, body, ul, ol {\n  margin: 0;\n  padding: 0; }\n\nul, ol {\n  list-style: none; }\n\n@font-face {\n  font-family: 'OpenSans';\n  font-style: normal;\n  font-weight: 300;\n  src: url(" + __webpack_require__(506) + ") format(\"truetype\"); }\n\nbody {\n  background: #4a526f;\n  font-family: 'OpenSans', sans-serif; }\n\n.calendar-app {\n  margin: 0 auto;\n  padding: 12px;\n  max-width: 780px; }\n  .calendar-app > h1 {\n    color: white;\n    font-size: 29px;\n    letter-spacing: 1px;\n    margin-bottom: 30px; }\n  .calendar-app .calendar-body {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex; }\n\n.appointments {\n  border-radius: 4px;\n  background: white;\n  color: #111;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  -webkit-box-flex: 5;\n      -ms-flex: 5;\n          flex: 5;\n  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.13), 0 18px 30px 0 rgba(0, 0, 0, 0.13);\n  z-index: 100; }\n  .appointments > header {\n    border-bottom: 1px solid #e7e7e7;\n    font-size: 20px;\n    padding: 16.8px 39px;\n    letter-spacing: 0.3px; }\n  .appointments > article {\n    padding: 12px;\n    color: #dadada; }\n    .appointments > article ul {\n      margin-left: 30px;\n      font-size: 12px; }\n      .appointments > article ul li {\n        margin-bottom: 36px;\n        background: white; }\n        .appointments > article ul li::after {\n          border-bottom: 1px solid #dadada;\n          content: '';\n          position: relative;\n          top: -9px;\n          left: 41px;\n          width: 85%;\n          display: block; }\n\n.editor {\n  border-bottom-right-radius: 4px;\n  border-top-right-radius: 4px;\n  background: #f8f8f8;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-flex: 2;\n      -ms-flex: 2;\n          flex: 2;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  padding: 12px;\n  margin: 20px 0; }\n  .editor label {\n    margin: 9px 13px 0 7px;\n    font-size: 14px;\n    letter-spacing: 0.3px; }\n    .editor label.narrow {\n      margin-right: 50px; }\n  .editor input, .editor textarea {\n    width: 100%;\n    border: 1px solid #dadada;\n    border-radius: 1px;\n    font-size: 20px;\n    color: #777777;\n    margin-top: 5px; }\n  .editor input {\n    height: 35px; }\n  .editor input[type=\"time\"] {\n    padding-left: 40px;\n    background: url(" + __webpack_require__(508) + ") white no-repeat 10px; }\n  .editor textarea {\n    resize: none;\n    height: 105px; }\n  .editor button {\n    padding: 12px;\n    margin: 8px 7px -4px;\n    border-radius: 4px;\n    font-size: 13px;\n    text-decoration: none;\n    cursor: pointer;\n    border: none;\n    letter-spacing: 0.3px; }\n    .editor button[type=\"submit\"] {\n      background: #20c576;\n      color: white; }\n    .editor button[type=\"reset\"] {\n      background: #dadada;\n      color: #111; }\n", ""]);
+	exports.push([module.id, "html, body, ul, ol {\n  margin: 0;\n  padding: 0; }\n\nul, ol {\n  list-style: none; }\n\n@font-face {\n  font-family: 'OpenSans';\n  font-style: normal;\n  font-weight: 300;\n  src: url(" + __webpack_require__(506) + ") format(\"truetype\"); }\n\nbody {\n  background: #4a526f;\n  font-family: 'OpenSans', sans-serif; }\n\n.calendar-app {\n  margin: 0 auto;\n  padding: 12px;\n  width: 780px; }\n  .calendar-app > h1 {\n    color: white;\n    font-size: 29px;\n    letter-spacing: 1px;\n    margin-bottom: 30px; }\n  .calendar-app .calendar-body {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex; }\n\n.appointments {\n  border-radius: 4px;\n  background: white;\n  color: #111;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  -webkit-box-flex: 5;\n      -ms-flex: 5;\n          flex: 5;\n  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.13), 0 18px 30px 0 rgba(0, 0, 0, 0.13);\n  z-index: 100; }\n  .appointments > header {\n    border-bottom: 1px solid #e7e7e7;\n    font-size: 20px;\n    padding: 16.8px 39px;\n    letter-spacing: 0.3px; }\n  .appointments > article {\n    padding: 12px;\n    color: #dadada; }\n    .appointments > article ul {\n      margin-left: 30px;\n      font-size: 12px; }\n      .appointments > article ul li {\n        margin-bottom: 36px;\n        background: white; }\n        .appointments > article ul li::after {\n          border-bottom: 1px solid #dadada;\n          content: '';\n          position: relative;\n          top: -9px;\n          left: 41px;\n          width: 85%;\n          display: block; }\n\n.editor {\n  border-bottom-right-radius: 4px;\n  border-top-right-radius: 4px;\n  background: #f8f8f8;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-flex: 2;\n      -ms-flex: 2;\n          flex: 2;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  padding: 12px;\n  margin: 20px 0; }\n  .editor label {\n    margin: 9px 13px 0 7px;\n    font-size: 14px;\n    letter-spacing: 0.3px; }\n    .editor label.narrow {\n      margin-right: 50px; }\n  .editor input, .editor textarea {\n    width: 100%;\n    border: 1px solid #dadada;\n    border-radius: 1px;\n    font-size: 20px;\n    color: #777777;\n    margin-top: 5px;\n    padding: 1px 5px; }\n  .editor input {\n    height: 35px; }\n  .editor input[type=\"time\"] {\n    padding-left: 40px;\n    background: url(" + __webpack_require__(508) + ") white no-repeat 10px; }\n  .editor textarea {\n    resize: none;\n    height: 105px; }\n  .editor input, .editor button, .editor textarea {\n    outline: 0; }\n    .editor input:focus, .editor button:focus, .editor textarea:focus {\n      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); }\n  .editor button {\n    padding: 12px;\n    margin: 8px 7px -4px;\n    border-radius: 4px;\n    font-size: 13px;\n    text-decoration: none;\n    cursor: pointer;\n    border: none;\n    letter-spacing: 0.3px;\n    -webkit-transition: background-color 0.1s;\n    transition: background-color 0.1s; }\n    .editor button[type=\"submit\"] {\n      background: #20c576;\n      color: white; }\n      .editor button[type=\"submit\"]:active {\n        background: #19995c; }\n    .editor button[type=\"reset\"] {\n      background: #dadada;\n      color: #111; }\n      .editor button[type=\"reset\"]:active {\n        background: #c1c1c1; }\n", ""]);
 	
 	// exports
 

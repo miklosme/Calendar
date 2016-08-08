@@ -1,11 +1,11 @@
-import { ActionTypes as AT } from '../constants';
+import {ActionTypes as AT} from '../constants';
 
-let nextEventId = 0;
-
-export const addEvent = (text) => {
+export const addEvent = (event) => {
+  console.log(event);
+  const { title, startTime, endTime, description } = event;
   return {
     type: AT.ADD_EVENT,
-    id: nextEventId++,
-    text,
+    id: Date.now(),
+    title, startTime, endTime, description,
   }
 };

@@ -27,6 +27,7 @@
     font-size: 20px;
     color: lighten($black, 40%);
     margin-top: 5px;
+    padding: 1px 5px;
   }
 
   input {
@@ -43,6 +44,13 @@
     height: $input-height * 3;
   }
 
+  input, button, textarea {
+    outline: 0;
+    &:focus {
+      box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    }
+  }
+
   button {
     padding: $padding;
     margin: 8px 7px -4px;
@@ -52,15 +60,24 @@
     cursor: pointer;
     border: none;
     letter-spacing: 0.3px;
+    transition: background-color 0.1s;
 
     &[type="submit"] {
       background: $green;
       color: white;
+
+      &:active {
+        background: darken($green, 10%);
+      }
     }
 
     &[type="reset"] {
       background: $dark-gray;
       color: $black;
+
+      &:active {
+        background: darken($dark-gray, 10%);
+      }
     }
   }
 }
