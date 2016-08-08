@@ -8,7 +8,8 @@ body {
 .calendar-app {
   margin: 0 auto 40px;
   padding: $padding;
-  width: 780px;
+  min-width: 780px;
+  max-width: 1000px;
 
   & > h1 {
     color: white;
