@@ -2,23 +2,13 @@ import 'babel-polyfill';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
 import calendarApp from './reducers';
 import App from './components/App';
-import { STORAGE_KEY } from './constants';
+import { createPersistentStore } from './persistence';
 
 import '../style/index.scss';
 
-const localData = localStorage.getItem(STORAGE_KEY);
-const persistedState = localData ? JSON.parse(localData) : {};
-
-const store = createStore(calendarApp, persistedState);
-
-store.subscribe(() => {
-  const state = store.getState();
-  console.log(state);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
-});
+const store = createPersistentStore(calendarApp);
 
 ReactDOM.render(
   <Provider store={store}>
@@ -26,9 +16,3 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('root')
 );
-
-
-window.clearStorage = () => {
-  localStorage.removeItem(STORAGE_KEY);
-  window.location.reload();
-};

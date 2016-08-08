@@ -58,8 +58,6 @@
 	
 	var _reactRedux = __webpack_require__(471);
 	
-	var _redux = __webpack_require__(478);
-	
 	var _reducers = __webpack_require__(494);
 	
 	var _reducers2 = _interopRequireDefault(_reducers);
@@ -68,33 +66,19 @@
 	
 	var _App2 = _interopRequireDefault(_App);
 	
-	var _constants = __webpack_require__(496);
+	var _persistence = __webpack_require__(513);
 	
 	__webpack_require__(504);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var localData = localStorage.getItem(_constants.STORAGE_KEY);
-	var persistedState = localData ? JSON.parse(localData) : {};
-	
-	var store = (0, _redux.createStore)(_reducers2.default, persistedState);
-	
-	store.subscribe(function () {
-	  var state = store.getState();
-	  console.log(state);
-	  localStorage.setItem(_constants.STORAGE_KEY, JSON.stringify(state));
-	});
+	var store = (0, _persistence.createPersistentStore)(_reducers2.default);
 	
 	_reactDom2.default.render(_react2.default.createElement(
 	  _reactRedux.Provider,
 	  { store: store },
 	  _react2.default.createElement(_App2.default, null)
 	), document.getElementById('root'));
-	
-	window.clearStorage = function () {
-	  localStorage.removeItem(_constants.STORAGE_KEY);
-	  window.location.reload();
-	};
 
 /***/ },
 /* 1 */
@@ -32222,6 +32206,41 @@
 /***/ function(module, exports) {
 
 	module.exports={"blue":"#4a526f","green":"#20c576","red":"#f65f52","black":"#111","lightGray":"#f8f8f8","darkGray":"#dadada","margin":"20px","padding":"12px","borderRadius":"4px","borderRadiusSmall":"1px","inputHeight":"35px","timeNodeBase":"18px","timeNodeGap":"36px","timeNodeHeight":"54px"}
+
+/***/ },
+/* 513 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.createPersistentStore = createPersistentStore;
+	
+	var _redux = __webpack_require__(478);
+	
+	var _constants = __webpack_require__(496);
+	
+	function createPersistentStore(reducer) {
+	  var localData = localStorage.getItem(_constants.STORAGE_KEY);
+	  var persistedState = localData ? JSON.parse(localData) : {};
+	
+	  var store = (0, _redux.createStore)(reducer, persistedState);
+	
+	  store.subscribe(function () {
+	    var state = store.getState();
+	    console.log(state);
+	    localStorage.setItem(_constants.STORAGE_KEY, JSON.stringify(state));
+	  });
+	
+	  return store;
+	}
+	
+	window.clearStorage = function () {
+	  localStorage.removeItem(_constants.STORAGE_KEY);
+	  window.location.reload();
+	};
 
 /***/ }
 /******/ ]);
