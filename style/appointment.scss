@@ -8,6 +8,7 @@
   max-height: 80px; // DEBUG
   overflow: hidden;
   position: relative;
+  flex: 1;
 
   &::after {
     content: ' ';

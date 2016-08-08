@@ -11,9 +11,36 @@ const timeList = Array.from({ length: timeListLength }).map((_, index) => {
   return `${leftPad(hour, 2, 0)}:00`;
 });
 
+function createGroupper() {
+  let currentEndTime = null;
+  return (prev, curr) => {
+    if (currentEndTime === null) {
+      currentEndTime = curr.endTime;
+      return [[curr]];
+    }
+
+    if (currentEndTime > curr.startTime) {
+      prev[prev.length - 1].push(curr);
+    } else {
+      prev.push([curr]);
+    }
+
+    if (currentEndTime < curr.endTime) {
+      currentEndTime = curr.endTime;
+    }
+
+    return prev;
+  }
+}
+
 let Overview = ({ appointments }) => {
   const now = new Date();
   const today = dateFormat(now, 'd mmmm yyyy').toLowerCase();
+
+  const appointmentsGroupedByOverlap = appointments
+    .sort(({ startTime: a }, { startTime: b }) => a - b)
+    .reduce(createGroupper(), []);
+
   return (
     <div className="overview">
       <header>{today}</header>
@@ -22,9 +49,11 @@ let Overview = ({ appointments }) => {
           {timeList.map((text, index) => <li key={index}>{text}</li>)}
         </ul>
         <div className="appointment-container">
-          {appointments.map((data, index) => {
-            return <Appointment key={index} {...data} />
-          })}
+          {appointmentsGroupedByOverlap.map((group, index) => (
+            <div key={index} className="appointment-group">
+              {group.map((data, index) => <Appointment key={index} {...data} />)}
+            </div>
+          ))}
         </div>
       </article>
     </div>
