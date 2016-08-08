@@ -31301,7 +31301,7 @@
 	  return (0, _leftPad2.default)(hour, 2, 0) + ':00';
 	});
 	
-	function createGroupper() {
+	function groupByOverlap() {
 	  var currentEndTime = null;
 	  return function (prev, curr) {
 	    if (currentEndTime === null) {
@@ -31324,11 +31324,8 @@
 	}
 	
 	function calculateGaps() {
-	  var previousEndTime = null;
+	  var previousEndTime = _constants.TIME_RANGE_MIN * 60;
 	  return function (group) {
-	    if (previousEndTime === null) {
-	      previousEndTime = _constants.TIME_RANGE_MIN * 60;
-	    }
 	    var groupStartTime = group[0].startTime;
 	    var topGapTime = groupStartTime - previousEndTime;
 	    var marginTop = topGapTime / 60 * ONE_HOUR_HEIGHT;
@@ -31358,7 +31355,7 @@
 	    var a = _ref3.startTime;
 	    var b = _ref4.startTime;
 	    return a - b;
-	  }).reduce(createGroupper(), []).map(calculateGaps());
+	  }).reduce(groupByOverlap(), []).map(calculateGaps());
 	
 	  return _react2.default.createElement(
 	    'div',

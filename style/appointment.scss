@@ -10,7 +10,7 @@
 
   &::after {
     content: ' ';
-    box-shadow: 0 14px 10px 22px #f65f52;
+    box-shadow: 0 14px 10px 22px $red;
     display: block;
     height: 5px;
     position: absolute;

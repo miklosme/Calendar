@@ -14,7 +14,7 @@ const timeList = Array.from({ length: timeListLength }).map((_, index) => {
   return `${leftPad(hour, 2, 0)}:00`;
 });
 
-function createGroupper() {
+function groupByOverlap() {
   let currentEndTime = null;
   return (prev, curr) => {
     if (currentEndTime === null) {
@@ -37,11 +37,8 @@ function createGroupper() {
 }
 
 function calculateGaps() {
-  let previousEndTime = null;
+  let previousEndTime = TIME_RANGE_MIN * 60;
   return group => {
-    if (previousEndTime === null) {
-      previousEndTime = TIME_RANGE_MIN * 60;
-    }
     const groupStartTime = group[0].startTime;
     const topGapTime = groupStartTime - previousEndTime;
     const marginTop = topGapTime / 60 * ONE_HOUR_HEIGHT;
@@ -64,7 +61,7 @@ let Overview = ({ appointments }) => {
 
   const appointmentsGroupedByOverlap = appointments
     .sort(({ startTime: a }, { startTime: b }) => a - b)
-    .reduce(createGroupper(), [])
+    .reduce(groupByOverlap(), [])
     .map(calculateGaps());
 
   return (
