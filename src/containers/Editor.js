@@ -43,12 +43,12 @@ let Editor = ({ dispatch }) => {
         <br/>
         <input ref={saveRef('title')} required />
       </label>
-      <label className="narrow">
+      <label>
         Start time
         <br/>
         <input type="time" ref={saveRef('startTime')} required />
       </label>
-      <label className="narrow">
+      <label>
         End time
         <br/>
         <input type="time" ref={saveRef('endTime')} required />
