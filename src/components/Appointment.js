@@ -1,12 +1,12 @@
 import React from 'react';
 import { integerTimeToString } from '../utils';
 
-const Appointment = ({ title, startTime, endTime, description, topGapPixel }) => {
+const Appointment = ({ title, startTime, endTime, description, marginTop, height }) => {
   const start = integerTimeToString(startTime);
   const end = integerTimeToString(endTime);
   const time = `${start} - ${end}`;
   return (
-    <div className="appointment" style={{ marginTop: topGapPixel }} >
+    <div className="appointment" style={{ marginTop, height }} >
       <h1>{title}</h1>
       <div className="time">{time}</div>
       <br/>

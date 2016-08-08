@@ -3,9 +3,7 @@
 .appointment {
   background: $red;
   border-radius: $border-radius;
-  margin: 5px;
   padding: $padding / 2 $padding;
-  max-height: 80px; // DEBUG
   overflow: hidden;
   position: relative;
   flex: 1;
@@ -19,6 +17,10 @@
     width: 100%;
     bottom: -5px;
     left: 0;
+  }
+
+  & + & {
+    margin-left: 5px;
   }
 
   h1 {

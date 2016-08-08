@@ -6,3 +6,10 @@ html, body, ul, ol {
 ul, ol {
   list-style: none;
 }
+
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}

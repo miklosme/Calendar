@@ -28,7 +28,7 @@
       top: 0;
       width: 77%;
       left: 86px;
-      padding-top: $padding;
+      padding-top: $padding + $time-node-base / 2;
 
       .appointment-group {
         display: flex;

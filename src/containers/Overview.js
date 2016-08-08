@@ -42,12 +42,18 @@ function calculateGaps() {
     if (previousEndTime === null) {
       previousEndTime = TIME_RANGE_MIN * 60;
     }
-    const topGapTime = group[0].startTime - previousEndTime;
-    const topGapPixel = topGapTime / 60 * ONE_HOUR_HEIGHT;
+    const groupStartTime = group[0].startTime;
+    const topGapTime = groupStartTime - previousEndTime;
+    const marginTop = topGapTime / 60 * ONE_HOUR_HEIGHT;
     previousEndTime = Math.max(...group.map(({ endTime }) => endTime));
     return {
-      topGapPixel,
-      appointments: group,
+      marginTop,
+      appointments: group.map(data => {
+        return Object.assign({}, data, {
+          marginTop: (data.startTime - groupStartTime) / 60 * ONE_HOUR_HEIGHT,
+          height: (data.endTime - data.startTime) / 60 * ONE_HOUR_HEIGHT,
+        });
+      }),
     }
   }
 }
@@ -71,10 +77,10 @@ let Overview = ({ appointments }) => {
           {timeList.map((text, index) => <li key={index}>{text}</li>)}
         </ul>
         <div className="appointment-container">
-          {appointmentsGroupedByOverlap.map(({ appointments, topGapPixel }, index) => (
-            <div key={index} className="appointment-group" style={{ marginTop: topGapPixel }}>
+          {appointmentsGroupedByOverlap.map(({ appointments, marginTop }, index) => (
+            <div key={index} className="appointment-group" style={{ marginTop }}>
               {appointments.map((data, index) => (
-                <Appointment key={index} {...data} marginTop={topGapPixel} />
+                <Appointment key={index} {...data} />
               ))}
             </div>
           ))}
