@@ -9,7 +9,6 @@ export function createPersistentStore(reducer) {
 
   store.subscribe(() => {
     const state = store.getState();
-    console.log(state);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state))
   });
 

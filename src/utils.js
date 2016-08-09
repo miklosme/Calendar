@@ -10,7 +10,9 @@ export function stringTimeToInteger(string) {
 }
 
 export function integerTimeToString(integer) {
-  console.log('intergeg', integer);
+  if (typeof integer !== 'number') {
+    debugger;
+  }
   const hours = Math.floor(integer / 60);
   const minutes = integer % 60;
   return `${leftPad(hours, 2, 0)}:${leftPad(minutes, 2, 0)}`;

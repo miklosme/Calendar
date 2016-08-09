@@ -6,11 +6,12 @@ import {addAppointment, removeAppointment} from '../actions';
 
 function getDefaultEditor() {
   const date = new Date();
+  const nextHour = (date.getHours() + 1) * 60;
   return {
     id: date.getTime(),
     title: '',
-    startTime: (date.getHours() + 1) * 60,
-    endTime: (date.getHours() + 2) * 60,
+    startTime: nextHour,
+    endTime: nextHour + 30,
     description: '',
   };
 }
@@ -22,6 +23,7 @@ class App extends Component {
   };
 
   editorSave = () => {
+    console.log(this.state.editor.id);
     this.props.dispatch(addAppointment(this.state.editor));
     this.setState({
       editor: getDefaultEditor(),
@@ -36,15 +38,16 @@ class App extends Component {
   };
 
   setEditor = editor => {
+    console.log(editor);
     this.setState({
       editor,
     });
   };
 
-  editorChange = key => event => {
+  editorChange = (key, convert = x => x) => event => {
     this.setState({
       editor: Object.assign({}, this.state.editor, {
-        [key]: event.target.value,
+        [key]: convert(event.target.value),
       }),
     });
   };

@@ -30997,8 +30997,6 @@
 	
 	var _constants = __webpack_require__(496);
 	
-	var _utils = __webpack_require__(498);
-	
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 	
 	var events = function events() {
@@ -31018,13 +31016,11 @@
 	      var endTime = action.endTime;
 	      var description = action.description;
 	
-	      var time1 = (0, _utils.stringTimeToInteger)(startTime);
-	      var time2 = (0, _utils.stringTimeToInteger)(endTime);
 	      return [].concat(_toConsumableArray(state.filter(matchById)), [{
 	        id: id,
 	        title: title,
-	        startTime: Math.min(time1, time2),
-	        endTime: Math.max(time1, time2),
+	        startTime: Math.min(startTime, endTime),
+	        endTime: Math.max(startTime, endTime),
 	        description: description
 	      }]);
 	
@@ -31162,7 +31158,9 @@
 	}
 	
 	function integerTimeToString(integer) {
-	  console.log('intergeg', integer);
+	  if (typeof integer !== 'number') {
+	    debugger;
+	  }
 	  var hours = Math.floor(integer / 60);
 	  var minutes = integer % 60;
 	  return (0, _leftPad2.default)(hours, 2, 0) + ':' + (0, _leftPad2.default)(minutes, 2, 0);
@@ -31244,7 +31242,6 @@
 	
 	  store.subscribe(function () {
 	    var state = store.getState();
-	    console.log(state);
 	    localStorage.setItem(_constants.STORAGE_KEY, JSON.stringify(state));
 	  });
 	
@@ -31658,11 +31655,12 @@
 	
 	function getDefaultEditor() {
 	  var date = new Date();
+	  var nextHour = (date.getHours() + 1) * 60;
 	  return {
 	    id: date.getTime(),
 	    title: '',
-	    startTime: (date.getHours() + 1) * 60,
-	    endTime: (date.getHours() + 2) * 60,
+	    startTime: nextHour,
+	    endTime: nextHour + 30,
 	    description: ''
 	  };
 	}
@@ -31684,6 +31682,7 @@
 	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(App)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.state = {
 	      editor: getDefaultEditor()
 	    }, _this.editorSave = function () {
+	      console.log(_this.state.editor.id);
 	      _this.props.dispatch((0, _actions.addAppointment)(_this.state.editor));
 	      _this.setState({
 	        editor: getDefaultEditor()
@@ -31694,13 +31693,17 @@
 	        editor: getDefaultEditor()
 	      });
 	    }, _this.setEditor = function (editor) {
+	      console.log(editor);
 	      _this.setState({
 	        editor: editor
 	      });
 	    }, _this.editorChange = function (key) {
+	      var convert = arguments.length <= 1 || arguments[1] === undefined ? function (x) {
+	        return x;
+	      } : arguments[1];
 	      return function (event) {
 	        _this.setState({
-	          editor: Object.assign({}, _this.state.editor, _defineProperty({}, key, event.target.value))
+	          editor: Object.assign({}, _this.state.editor, _defineProperty({}, key, convert(event.target.value)))
 	        });
 	      };
 	    }, _temp), _possibleConstructorReturn(_this, _ret);
@@ -32226,7 +32229,6 @@
 	  var endTime = _ref.endTime;
 	  var description = _ref.description;
 	
-	  console.log(startTime);
 	  var onSubmit = function onSubmit(event) {
 	    event.preventDefault();
 	    onSave();
@@ -32261,7 +32263,7 @@
 	      _react2.default.createElement('input', {
 	        type: 'time',
 	        value: (0, _utils.integerTimeToString)(startTime),
-	        onChange: onChange('startTime'),
+	        onChange: onChange('startTime', _utils.stringTimeToInteger),
 	        required: true
 	      })
 	    ),
@@ -32273,7 +32275,7 @@
 	      _react2.default.createElement('input', {
 	        type: 'time',
 	        value: (0, _utils.integerTimeToString)(endTime),
-	        onChange: onChange('endTime'),
+	        onChange: onChange('endTime', _utils.stringTimeToInteger),
 	        required: true
 	      })
 	    ),

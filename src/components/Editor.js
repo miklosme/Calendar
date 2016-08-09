@@ -1,8 +1,7 @@
 import React from 'react';
-import {integerTimeToString} from '../utils';
+import {integerTimeToString, stringTimeToInteger} from '../utils';
 
 const Editor = ({ onChange, onSave, onCancel, id, title, startTime, endTime, description }) => {
-console.log(startTime);
   const onSubmit = event => {
     event.preventDefault();
     onSave();
@@ -30,7 +29,7 @@ console.log(startTime);
         <input
           type="time"
           value={integerTimeToString(startTime)}
-          onChange={onChange('startTime')}
+          onChange={onChange('startTime', stringTimeToInteger)}
           required
         />
       </label>
@@ -40,7 +39,7 @@ console.log(startTime);
         <input
           type="time"
           value={integerTimeToString(endTime)}
-          onChange={onChange('endTime')}
+          onChange={onChange('endTime', stringTimeToInteger)}
           required
         />
       </label>

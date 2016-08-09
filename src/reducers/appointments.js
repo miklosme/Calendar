@@ -1,5 +1,4 @@
 import {ActionTypes as AT} from '../constants';
-import { stringTimeToInteger } from '../utils';
 
 const events = (state = [], action) => {
   const matchById = ({ id }) => id !== action.id;
@@ -7,15 +6,13 @@ const events = (state = [], action) => {
   switch (action.type) {
     case AT.ADD_APPOINTMENT:
       const { id, title, startTime, endTime, description } = action;
-      const time1 = stringTimeToInteger(startTime);
-      const time2 = stringTimeToInteger(endTime);
       return [
         ...state.filter(matchById),
         {
           id,
           title,
-          startTime: Math.min(time1, time2),
-          endTime: Math.max(time1, time2),
+          startTime: Math.min(startTime, endTime),
+          endTime: Math.max(startTime, endTime),
           description,
         }
       ];
