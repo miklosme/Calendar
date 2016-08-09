@@ -1,0 +1,161 @@
+exports[`components/Overview renders correctly 1`] = `
+<div
+  className="overview"
+  onClick={[Function onClick]}>
+  <header>
+    9 august 2016
+  </header>
+  <article>
+    <ul>
+      <li>
+        07:00
+      </li>
+      <li>
+        08:00
+      </li>
+      <li>
+        09:00
+      </li>
+      <li>
+        10:00
+      </li>
+      <li>
+        11:00
+      </li>
+      <li>
+        12:00
+      </li>
+      <li>
+        13:00
+      </li>
+      <li>
+        14:00
+      </li>
+      <li>
+        15:00
+      </li>
+      <li>
+        16:00
+      </li>
+      <li>
+        17:00
+      </li>
+    </ul>
+    <div
+      className="appointment-container">
+      <div
+        className="appointment-group"
+        style={
+          Object {
+            "marginTop": 0
+          }
+        }>
+        <a
+          className="appointment"
+          href="#"
+          onClick={[Function onClick]}
+          onFocus={[Function onFocus]}
+          style={
+            Object {
+              "height": 15,
+              "marginTop": 0
+            }
+          }>
+          <h1>
+            iuf
+          </h1>
+          <div
+            className="time">
+            07:00 - 07:30
+          </div>
+          <br />
+          <p
+            className="description">
+            sdf
+          </p>
+        </a>
+      </div>
+      <div
+        className="appointment-group"
+        style={
+          Object {
+            "marginTop": 15
+          }
+        }>
+        <a
+          className="appointment"
+          href="#"
+          onClick={[Function onClick]}
+          onFocus={[Function onFocus]}
+          style={
+            Object {
+              "height": 225,
+              "marginTop": 0
+            }
+          }>
+          <h1>
+            sdfffff
+          </h1>
+          <div
+            className="time">
+            08:00 - 15:30
+          </div>
+          <br />
+          <p
+            className="description">
+            sdf
+          </p>
+        </a>
+        <a
+          className="appointment"
+          href="#"
+          onClick={[Function onClick]}
+          onFocus={[Function onFocus]}
+          style={
+            Object {
+              "height": 105,
+              "marginTop": 0
+            }
+          }>
+          <h1>
+            sfg
+          </h1>
+          <div
+            className="time">
+            08:00 - 11:30
+          </div>
+          <br />
+          <p
+            className="description">
+            asdf
+          </p>
+        </a>
+        <a
+          className="appointment"
+          href="#"
+          onClick={[Function onClick]}
+          onFocus={[Function onFocus]}
+          style={
+            Object {
+              "height": 128,
+              "marginTop": 157
+            }
+          }>
+          <h1>
+            sdff
+          </h1>
+          <div
+            className="time">
+            13:14 - 17:30
+          </div>
+          <br />
+          <p
+            className="description">
+            sdsd
+          </p>
+        </a>
+      </div>
+    </div>
+  </article>
+</div>
+`;

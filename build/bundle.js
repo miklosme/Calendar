@@ -62,13 +62,13 @@
 	
 	var _reducers2 = _interopRequireDefault(_reducers);
 	
-	var _App = __webpack_require__(507);
+	var _App = __webpack_require__(498);
 	
 	var _App2 = _interopRequireDefault(_App);
 	
-	var _persistence = __webpack_require__(500);
+	var _persistence = __webpack_require__(507);
 	
-	__webpack_require__(501);
+	__webpack_require__(508);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -31134,41 +31134,532 @@
 	  value: true
 	});
 	
-	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	exports.isOverlap = isOverlap;
-	exports.stringTimeToInteger = stringTimeToInteger;
-	exports.integerTimeToString = integerTimeToString;
+	var _react = __webpack_require__(298);
 	
-	var _leftPad = __webpack_require__(499);
+	var _react2 = _interopRequireDefault(_react);
 	
-	var _leftPad2 = _interopRequireDefault(_leftPad);
+	var _Overview = __webpack_require__(499);
+	
+	var _Overview2 = _interopRequireDefault(_Overview);
+	
+	var _Editor = __webpack_require__(505);
+	
+	var _Editor2 = _interopRequireDefault(_Editor);
+	
+	var _reactRedux = __webpack_require__(471);
+	
+	var _actions = __webpack_require__(506);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	function isOverlap(x, y, xx, yy) {
-	  return Math.max(x, xx) <= Math.min(y, yy);
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	function getDefaultEditor() {
+	  var date = new Date();
+	  var nextHour = (date.getHours() + 1) * 60;
+	  return {
+	    id: date.getTime(),
+	    title: '',
+	    startTime: nextHour,
+	    endTime: nextHour + 30,
+	    description: '',
+	    isNew: true
+	  };
 	}
 	
-	function stringTimeToInteger(string) {
-	  var _string$split = string.split(':');
+	var App = function (_Component) {
+	  _inherits(App, _Component);
 	
-	  var _string$split2 = _slicedToArray(_string$split, 2);
+	  function App() {
+	    var _Object$getPrototypeO;
 	
-	  var hours = _string$split2[0];
-	  var minutes = _string$split2[1];
+	    var _temp, _this, _ret;
 	
-	  return parseInt(hours, 10) * 60 + parseInt(minutes, 10);
-	}
+	    _classCallCheck(this, App);
 	
-	function integerTimeToString(integer) {
-	  var hours = Math.floor(integer / 60);
-	  var minutes = integer % 60;
-	  return (0, _leftPad2.default)(hours, 2, 0) + ':' + (0, _leftPad2.default)(minutes, 2, 0);
-	}
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+	
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(App)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.state = {
+	      editor: getDefaultEditor()
+	    }, _this.editorReset = function () {
+	      _this.setState({
+	        editor: getDefaultEditor()
+	      });
+	    }, _this.editorSave = function () {
+	      _this.props.dispatch((0, _actions.addAppointment)(_this.state.editor));
+	      _this.editorReset();
+	    }, _this.editorDelete = function (id) {
+	      _this.props.dispatch((0, _actions.removeAppointment)(id));
+	      _this.editorReset();
+	    }, _this.editorSet = function (editor) {
+	      if (editor === null) {
+	        _this.editorReset();
+	        return;
+	      }
+	      _this.setState({
+	        editor: editor
+	      });
+	    }, _this.editorChange = function (key) {
+	      var convert = arguments.length <= 1 || arguments[1] === undefined ? function (x) {
+	        return x;
+	      } : arguments[1];
+	      return function (event) {
+	        _this.setState({
+	          editor: Object.assign({}, _this.state.editor, _defineProperty({}, key, convert(event.target.value)))
+	        });
+	      };
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
+	  }
+	
+	  _createClass(App, [{
+	    key: 'render',
+	    value: function render() {
+	      var _props = this.props;
+	      var appointments = _props.appointments;
+	      var dispatch = _props.dispatch;
+	      var editor = this.state.editor;
+	
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'calendar-app' },
+	        _react2.default.createElement(
+	          'h1',
+	          null,
+	          'Today\'s appointments'
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'calendar-body' },
+	          _react2.default.createElement(_Overview2.default, {
+	            appointments: appointments,
+	            onSelect: this.editorSet
+	          }),
+	          _react2.default.createElement(_Editor2.default, {
+	            values: editor,
+	            onChange: this.editorChange,
+	            onSave: this.editorSave,
+	            onCancel: this.editorDelete,
+	            reset: function reset() {
+	              return dispatch((0, _actions.deleteAllAppointments)());
+	            }
+	          })
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return App;
+	}(_react.Component);
+	
+	var mapStateToProps = function mapStateToProps(_ref) {
+	  var appointments = _ref.appointments;
+	
+	  return {
+	    appointments: appointments
+	  };
+	};
+	
+	App = (0, _reactRedux.connect)(mapStateToProps)(App);
+	
+	exports.default = App;
 
 /***/ },
 /* 499 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(298);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _constants = __webpack_require__(496);
+	
+	var _dateformat = __webpack_require__(500);
+	
+	var _dateformat2 = _interopRequireDefault(_dateformat);
+	
+	var _leftPad = __webpack_require__(501);
+	
+	var _leftPad2 = _interopRequireDefault(_leftPad);
+	
+	var _Appointment = __webpack_require__(502);
+	
+	var _Appointment2 = _interopRequireDefault(_Appointment);
+	
+	var _values = __webpack_require__(504);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } } // :D
+	
+	
+	var ONE_HOUR_HEIGHT = parseInt(_values.timeNodeHeight, 10);
+	
+	var timeListLength = _constants.TIME_RANGE_MAX - _constants.TIME_RANGE_MIN + 1;
+	var timeList = Array.from({ length: timeListLength }).map(function (_, index) {
+	  var hour = _constants.TIME_RANGE_MIN + index;
+	  return (0, _leftPad2.default)(hour, 2, 0) + ':00';
+	});
+	
+	function groupByOverlap() {
+	  var currentEndTime = null;
+	  return function (prev, curr) {
+	    if (currentEndTime === null) {
+	      currentEndTime = curr.endTime;
+	      return [[curr]];
+	    }
+	
+	    if (currentEndTime > curr.startTime) {
+	      prev[prev.length - 1].push(curr);
+	    } else {
+	      prev.push([curr]);
+	    }
+	
+	    if (currentEndTime < curr.endTime) {
+	      currentEndTime = curr.endTime;
+	    }
+	
+	    return prev;
+	  };
+	}
+	
+	function calculateGaps() {
+	  var previousEndTime = _constants.TIME_RANGE_MIN * 60;
+	  return function (group) {
+	    var groupStartTime = group[0].startTime;
+	    var topGapTime = groupStartTime - previousEndTime;
+	    var marginTop = topGapTime / 60 * ONE_HOUR_HEIGHT;
+	    previousEndTime = Math.max.apply(Math, _toConsumableArray(group.map(function (_ref) {
+	      var endTime = _ref.endTime;
+	      return endTime;
+	    })));
+	    return {
+	      marginTop: marginTop,
+	      appointments: group.map(function (data) {
+	        return Object.assign({}, data, {
+	          marginTop: (data.startTime - groupStartTime) / 60 * ONE_HOUR_HEIGHT,
+	          height: (data.endTime - data.startTime) / 60 * ONE_HOUR_HEIGHT
+	        });
+	      })
+	    };
+	  };
+	}
+	
+	function stableSortByStart(a, b) {
+	  if (a.startTime === b.startTime) {
+	    return a.id - b.id;
+	  }
+	
+	  return a.startTime - b.startTime;
+	}
+	
+	var Overview = function Overview(_ref2) {
+	  var appointments = _ref2.appointments;
+	  var onSelect = _ref2.onSelect;
+	
+	  var now = new Date();
+	  var today = (0, _dateformat2.default)(now, 'd mmmm yyyy').toLowerCase();
+	
+	  var appointmentsGroupedByOverlap = appointments.sort(stableSortByStart).reduce(groupByOverlap(), []).map(calculateGaps());
+	
+	  return _react2.default.createElement(
+	    'div',
+	    { className: 'overview', onClick: function onClick() {
+	        return onSelect(null);
+	      } },
+	    _react2.default.createElement(
+	      'header',
+	      null,
+	      today
+	    ),
+	    _react2.default.createElement(
+	      'article',
+	      null,
+	      _react2.default.createElement(
+	        'ul',
+	        null,
+	        timeList.map(function (text, index) {
+	          return _react2.default.createElement(
+	            'li',
+	            { key: index },
+	            text
+	          );
+	        })
+	      ),
+	      _react2.default.createElement(
+	        'div',
+	        { className: 'appointment-container' },
+	        appointmentsGroupedByOverlap.map(function (_ref3, index) {
+	          var appointments = _ref3.appointments;
+	          var marginTop = _ref3.marginTop;
+	          return _react2.default.createElement(
+	            'div',
+	            { key: index, className: 'appointment-group', style: { marginTop: marginTop } },
+	            appointments.map(function (data, index) {
+	              return _react2.default.createElement(_Appointment2.default, {
+	                key: index,
+	                values: data,
+	                onSelect: onSelect
+	              });
+	            })
+	          );
+	        })
+	      )
+	    )
+	  );
+	};
+	
+	exports.default = Overview;
+
+/***/ },
+/* 500 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_RESULT__;/*
+	 * Date Format 1.2.3
+	 * (c) 2007-2009 Steven Levithan <stevenlevithan.com>
+	 * MIT license
+	 *
+	 * Includes enhancements by Scott Trenda <scott.trenda.net>
+	 * and Kris Kowal <cixar.com/~kris.kowal/>
+	 *
+	 * Accepts a date, a mask, or a date and a mask.
+	 * Returns a formatted version of the given date.
+	 * The date defaults to the current date/time.
+	 * The mask defaults to dateFormat.masks.default.
+	 */
+	
+	(function(global) {
+	  'use strict';
+	
+	  var dateFormat = (function() {
+	      var token = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZWN]|'[^']*'|'[^']*'/g;
+	      var timezone = /\b(?:[PMCEA][SDP]T|(?:Pacific|Mountain|Central|Eastern|Atlantic) (?:Standard|Daylight|Prevailing) Time|(?:GMT|UTC)(?:[-+]\d{4})?)\b/g;
+	      var timezoneClip = /[^-+\dA-Z]/g;
+	  
+	      // Regexes and supporting functions are cached through closure
+	      return function (date, mask, utc, gmt) {
+	  
+	        // You can't provide utc if you skip other args (use the 'UTC:' mask prefix)
+	        if (arguments.length === 1 && kindOf(date) === 'string' && !/\d/.test(date)) {
+	          mask = date;
+	          date = undefined;
+	        }
+	  
+	        date = date || new Date;
+	  
+	        if(!(date instanceof Date)) {
+	          date = new Date(date);
+	        }
+	  
+	        if (isNaN(date)) {
+	          throw TypeError('Invalid date');
+	        }
+	  
+	        mask = String(dateFormat.masks[mask] || mask || dateFormat.masks['default']);
+	  
+	        // Allow setting the utc/gmt argument via the mask
+	        var maskSlice = mask.slice(0, 4);
+	        if (maskSlice === 'UTC:' || maskSlice === 'GMT:') {
+	          mask = mask.slice(4);
+	          utc = true;
+	          if (maskSlice === 'GMT:') {
+	            gmt = true;
+	          }
+	        }
+	  
+	        var _ = utc ? 'getUTC' : 'get';
+	        var d = date[_ + 'Date']();
+	        var D = date[_ + 'Day']();
+	        var m = date[_ + 'Month']();
+	        var y = date[_ + 'FullYear']();
+	        var H = date[_ + 'Hours']();
+	        var M = date[_ + 'Minutes']();
+	        var s = date[_ + 'Seconds']();
+	        var L = date[_ + 'Milliseconds']();
+	        var o = utc ? 0 : date.getTimezoneOffset();
+	        var W = getWeek(date);
+	        var N = getDayOfWeek(date);
+	        var flags = {
+	          d:    d,
+	          dd:   pad(d),
+	          ddd:  dateFormat.i18n.dayNames[D],
+	          dddd: dateFormat.i18n.dayNames[D + 7],
+	          m:    m + 1,
+	          mm:   pad(m + 1),
+	          mmm:  dateFormat.i18n.monthNames[m],
+	          mmmm: dateFormat.i18n.monthNames[m + 12],
+	          yy:   String(y).slice(2),
+	          yyyy: y,
+	          h:    H % 12 || 12,
+	          hh:   pad(H % 12 || 12),
+	          H:    H,
+	          HH:   pad(H),
+	          M:    M,
+	          MM:   pad(M),
+	          s:    s,
+	          ss:   pad(s),
+	          l:    pad(L, 3),
+	          L:    pad(Math.round(L / 10)),
+	          t:    H < 12 ? 'a'  : 'p',
+	          tt:   H < 12 ? 'am' : 'pm',
+	          T:    H < 12 ? 'A'  : 'P',
+	          TT:   H < 12 ? 'AM' : 'PM',
+	          Z:    gmt ? 'GMT' : utc ? 'UTC' : (String(date).match(timezone) || ['']).pop().replace(timezoneClip, ''),
+	          o:    (o > 0 ? '-' : '+') + pad(Math.floor(Math.abs(o) / 60) * 100 + Math.abs(o) % 60, 4),
+	          S:    ['th', 'st', 'nd', 'rd'][d % 10 > 3 ? 0 : (d % 100 - d % 10 != 10) * d % 10],
+	          W:    W,
+	          N:    N
+	        };
+	  
+	        return mask.replace(token, function (match) {
+	          if (match in flags) {
+	            return flags[match];
+	          }
+	          return match.slice(1, match.length - 1);
+	        });
+	      };
+	    })();
+	
+	  dateFormat.masks = {
+	    'default':               'ddd mmm dd yyyy HH:MM:ss',
+	    'shortDate':             'm/d/yy',
+	    'mediumDate':            'mmm d, yyyy',
+	    'longDate':              'mmmm d, yyyy',
+	    'fullDate':              'dddd, mmmm d, yyyy',
+	    'shortTime':             'h:MM TT',
+	    'mediumTime':            'h:MM:ss TT',
+	    'longTime':              'h:MM:ss TT Z',
+	    'isoDate':               'yyyy-mm-dd',
+	    'isoTime':               'HH:MM:ss',
+	    'isoDateTime':           'yyyy-mm-dd\'T\'HH:MM:sso',
+	    'isoUtcDateTime':        'UTC:yyyy-mm-dd\'T\'HH:MM:ss\'Z\'',
+	    'expiresHeaderFormat':   'ddd, dd mmm yyyy HH:MM:ss Z'
+	  };
+	
+	  // Internationalization strings
+	  dateFormat.i18n = {
+	    dayNames: [
+	      'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat',
+	      'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
+	    ],
+	    monthNames: [
+	      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
+	      'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
+	    ]
+	  };
+	
+	function pad(val, len) {
+	  val = String(val);
+	  len = len || 2;
+	  while (val.length < len) {
+	    val = '0' + val;
+	  }
+	  return val;
+	}
+	
+	/**
+	 * Get the ISO 8601 week number
+	 * Based on comments from
+	 * http://techblog.procurios.nl/k/n618/news/view/33796/14863/Calculate-ISO-8601-week-and-year-in-javascript.html
+	 *
+	 * @param  {Object} `date`
+	 * @return {Number}
+	 */
+	function getWeek(date) {
+	  // Remove time components of date
+	  var targetThursday = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+	
+	  // Change date to Thursday same week
+	  targetThursday.setDate(targetThursday.getDate() - ((targetThursday.getDay() + 6) % 7) + 3);
+	
+	  // Take January 4th as it is always in week 1 (see ISO 8601)
+	  var firstThursday = new Date(targetThursday.getFullYear(), 0, 4);
+	
+	  // Change date to Thursday same week
+	  firstThursday.setDate(firstThursday.getDate() - ((firstThursday.getDay() + 6) % 7) + 3);
+	
+	  // Check if daylight-saving-time-switch occured and correct for it
+	  var ds = targetThursday.getTimezoneOffset() - firstThursday.getTimezoneOffset();
+	  targetThursday.setHours(targetThursday.getHours() - ds);
+	
+	  // Number of weeks between target Thursday and first Thursday
+	  var weekDiff = (targetThursday - firstThursday) / (86400000*7);
+	  return 1 + Math.floor(weekDiff);
+	}
+	
+	/**
+	 * Get ISO-8601 numeric representation of the day of the week
+	 * 1 (for Monday) through 7 (for Sunday)
+	 * 
+	 * @param  {Object} `date`
+	 * @return {Number}
+	 */
+	function getDayOfWeek(date) {
+	  var dow = date.getDay();
+	  if(dow === 0) {
+	    dow = 7;
+	  }
+	  return dow;
+	}
+	
+	/**
+	 * kind-of shortcut
+	 * @param  {*} val
+	 * @return {String}
+	 */
+	function kindOf(val) {
+	  if (val === null) {
+	    return 'null';
+	  }
+	
+	  if (val === undefined) {
+	    return 'undefined';
+	  }
+	
+	  if (typeof val !== 'object') {
+	    return typeof val;
+	  }
+	
+	  if (Array.isArray(val)) {
+	    return 'array';
+	  }
+	
+	  return {}.toString.call(val)
+	    .slice(8, -1).toLowerCase();
+	};
+	
+	
+	
+	  if (true) {
+	    !(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
+	      return dateFormat;
+	    }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	  } else if (typeof exports === 'object') {
+	    module.exports = dateFormat;
+	  } else {
+	    global.dateFormat = dateFormat;
+	  }
+	})(this);
+
+
+/***/ },
+/* 501 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -31221,7 +31712,278 @@
 
 
 /***/ },
-/* 500 */
+/* 502 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(298);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _utils = __webpack_require__(503);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Appointment = function Appointment(_ref) {
+	  var values = _ref.values;
+	  var onSelect = _ref.onSelect;
+	  var title = values.title;
+	  var startTime = values.startTime;
+	  var endTime = values.endTime;
+	  var description = values.description;
+	  var marginTop = values.marginTop;
+	  var height = values.height;
+	
+	  var start = (0, _utils.integerTimeToString)(startTime);
+	  var end = (0, _utils.integerTimeToString)(endTime);
+	  var time = start + ' - ' + end;
+	  return _react2.default.createElement(
+	    'a',
+	    {
+	      href: '#',
+	      className: 'appointment',
+	      style: { marginTop: marginTop, height: height },
+	      onClick: function onClick(event) {
+	        event.preventDefault();
+	        event.stopPropagation();
+	      },
+	      onFocus: function onFocus() {
+	        return onSelect(values);
+	      }
+	    },
+	    _react2.default.createElement(
+	      'h1',
+	      null,
+	      title
+	    ),
+	    _react2.default.createElement(
+	      'div',
+	      { className: 'time' },
+	      time
+	    ),
+	    _react2.default.createElement('br', null),
+	    _react2.default.createElement(
+	      'p',
+	      { className: 'description' },
+	      description
+	    )
+	  );
+	};
+	
+	exports.default = Appointment;
+
+/***/ },
+/* 503 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+	
+	exports.isOverlap = isOverlap;
+	exports.stringTimeToInteger = stringTimeToInteger;
+	exports.integerTimeToString = integerTimeToString;
+	
+	var _leftPad = __webpack_require__(501);
+	
+	var _leftPad2 = _interopRequireDefault(_leftPad);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function isOverlap(x, y, xx, yy) {
+	  return Math.max(x, xx) <= Math.min(y, yy);
+	}
+	
+	function stringTimeToInteger(string) {
+	  var _string$split = string.split(':');
+	
+	  var _string$split2 = _slicedToArray(_string$split, 2);
+	
+	  var hours = _string$split2[0];
+	  var minutes = _string$split2[1];
+	
+	  return parseInt(hours, 10) * 60 + parseInt(minutes, 10);
+	}
+	
+	function integerTimeToString(integer) {
+	  var hours = Math.floor(integer / 60);
+	  var minutes = integer % 60;
+	  return (0, _leftPad2.default)(hours, 2, 0) + ':' + (0, _leftPad2.default)(minutes, 2, 0);
+	}
+
+/***/ },
+/* 504 */
+/***/ function(module, exports) {
+
+	module.exports={"blue":"#4a526f","green":"#20c576","red":"#f65f52","black":"#111","lightGray":"#f8f8f8","darkGray":"#dadada","margin":"20px","padding":"12px","borderRadius":"4px","borderRadiusSmall":"1px","inputHeight":"35px","timeNodeBase":"18px","timeNodeGap":"36px","timeNodeHeight":"54px"}
+
+/***/ },
+/* 505 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(298);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _utils = __webpack_require__(503);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Editor = function Editor(_ref) {
+	  var onChange = _ref.onChange;
+	  var onSave = _ref.onSave;
+	  var onCancel = _ref.onCancel;
+	  var reset = _ref.reset;
+	  var values = _ref.values;
+	  var id = values.id;
+	  var title = values.title;
+	  var startTime = values.startTime;
+	  var endTime = values.endTime;
+	  var description = values.description;
+	  var isNew = values.isNew;
+	
+	
+	  var onSubmit = function onSubmit(event) {
+	    event.preventDefault();
+	    onSave();
+	  };
+	
+	  return _react2.default.createElement(
+	    'form',
+	    {
+	      className: 'editor',
+	      onSubmit: onSubmit,
+	      onReset: function onReset() {
+	        return onCancel(id);
+	      }
+	    },
+	    _react2.default.createElement(
+	      'label',
+	      null,
+	      'Title',
+	      _react2.default.createElement('br', null),
+	      _react2.default.createElement('input', {
+	        type: 'text',
+	        value: title,
+	        onChange: onChange('title'),
+	        required: true
+	      })
+	    ),
+	    _react2.default.createElement(
+	      'label',
+	      null,
+	      'Start time',
+	      _react2.default.createElement('br', null),
+	      _react2.default.createElement('input', {
+	        type: 'time',
+	        value: (0, _utils.integerTimeToString)(startTime),
+	        onChange: onChange('startTime', _utils.stringTimeToInteger),
+	        required: true
+	      })
+	    ),
+	    _react2.default.createElement(
+	      'label',
+	      null,
+	      'End time',
+	      _react2.default.createElement('br', null),
+	      _react2.default.createElement('input', {
+	        type: 'time',
+	        value: (0, _utils.integerTimeToString)(endTime),
+	        onChange: onChange('endTime', _utils.stringTimeToInteger),
+	        required: true
+	      })
+	    ),
+	    _react2.default.createElement(
+	      'label',
+	      null,
+	      'Description',
+	      _react2.default.createElement('br', null),
+	      _react2.default.createElement('textarea', {
+	        onChange: onChange('description'),
+	        required: true,
+	        value: description
+	      })
+	    ),
+	    _react2.default.createElement(
+	      'button',
+	      { type: 'submit' },
+	      'Save'
+	    ),
+	    _react2.default.createElement(
+	      'button',
+	      { type: 'reset' },
+	      isNew ? 'Cancel' : 'Delete'
+	    ),
+	    _react2.default.createElement(
+	      'a',
+	      { href: '#', className: 'reset-all', onClick: reset },
+	      'Delete all'
+	    )
+	  );
+	};
+	
+	exports.default = Editor;
+
+/***/ },
+/* 506 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.deleteAllAppointments = exports.removeAppointment = exports.addAppointment = undefined;
+	
+	var _constants = __webpack_require__(496);
+	
+	var addAppointment = exports.addAppointment = function addAppointment(appointment) {
+	  var id = appointment.id;
+	  var title = appointment.title;
+	  var startTime = appointment.startTime;
+	  var endTime = appointment.endTime;
+	  var description = appointment.description;
+	
+	  return {
+	    type: _constants.ActionTypes.ADD_APPOINTMENT,
+	    id: id,
+	    title: title,
+	    startTime: startTime,
+	    endTime: endTime,
+	    description: description
+	  };
+	};
+	
+	var removeAppointment = exports.removeAppointment = function removeAppointment(id) {
+	  return {
+	    type: _constants.ActionTypes.REMOVE_APPOINTMENT,
+	    id: id
+	  };
+	};
+	
+	var deleteAllAppointments = exports.deleteAllAppointments = function deleteAllAppointments() {
+	  return {
+	    type: _constants.ActionTypes.DELETE_ALL_APPOINTMENTS
+	  };
+	};
+
+/***/ },
+/* 507 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31243,6 +32005,7 @@
 	
 	  store.subscribe(function () {
 	    var state = store.getState();
+	    console.log(JSON.stringify(state));
 	    localStorage.setItem(_constants.STORAGE_KEY, JSON.stringify(state));
 	  });
 	
@@ -31250,16 +32013,16 @@
 	}
 
 /***/ },
-/* 501 */
+/* 508 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(502);
+	var content = __webpack_require__(509);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(506)(content, {});
+	var update = __webpack_require__(513)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -31276,21 +32039,21 @@
 	}
 
 /***/ },
-/* 502 */
+/* 509 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(503)();
+	exports = module.exports = __webpack_require__(510)();
 	// imports
 	
 	
 	// module
-	exports.push([module.id, "html, body, ul, ol {\n  margin: 0;\n  padding: 0; }\n\nul, ol {\n  list-style: none; }\n\nhtml {\n  box-sizing: border-box; }\n\n*, *:before, *:after {\n  box-sizing: inherit; }\n\n@font-face {\n  font-family: 'OpenSans';\n  font-style: normal;\n  font-weight: 300;\n  src: url(" + __webpack_require__(504) + ") format(\"truetype\"); }\n\nbody {\n  background: #4a526f;\n  font-family: 'OpenSans', sans-serif; }\n\n.calendar-app {\n  margin: 0 auto 40px;\n  padding: 12px;\n  min-width: 780px;\n  max-width: 1000px; }\n  .calendar-app > h1 {\n    color: white;\n    font-size: 29px;\n    letter-spacing: 1px;\n    margin-bottom: 30px; }\n  .calendar-app .calendar-body {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex; }\n\n.overview {\n  border-radius: 4px;\n  background: white;\n  color: #111;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  -webkit-box-flex: 5;\n      -ms-flex: 5;\n          flex: 5;\n  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.13), 0 18px 30px 0 rgba(0, 0, 0, 0.13);\n  z-index: 100; }\n  .overview > header {\n    border-bottom: 1px solid #e7e7e7;\n    font-size: 20px;\n    padding: 16.8px 39px;\n    letter-spacing: 0.3px; }\n  .overview > article {\n    padding: 12px;\n    color: #dadada;\n    position: relative;\n    overflow: hidden; }\n    .overview > article ul {\n      margin-left: 30px;\n      font-size: 12px;\n      -webkit-user-select: none;\n         -moz-user-select: none;\n          -ms-user-select: none;\n              user-select: none;\n      cursor: default; }\n      .overview > article ul li {\n        height: 18px;\n        margin-bottom: 36px;\n        background: white; }\n        .overview > article ul li::after {\n          border-bottom: 1px solid #dadada;\n          content: '';\n          position: relative;\n          top: -9px;\n          left: 41px;\n          width: 88%;\n          display: block; }\n\n.editor {\n  border-bottom-right-radius: 4px;\n  border-top-right-radius: 4px;\n  background: #f8f8f8;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-flex: 2;\n      -ms-flex: 2;\n          flex: 2;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  padding: 12px;\n  margin: 20px 0;\n  max-width: 233px; }\n  .editor label {\n    margin: 9px 7px 0 7px;\n    font-size: 14px;\n    letter-spacing: 0.3px; }\n  .editor input, .editor textarea {\n    width: 100%;\n    border: 1px solid #dadada;\n    border-radius: 1px;\n    font-size: 20px;\n    color: #919191;\n    margin-top: 5px;\n    padding: 1px 5px; }\n  .editor input {\n    height: 35px; }\n  .editor input[type=\"time\"] {\n    padding-left: 40px;\n    background: url(" + __webpack_require__(505) + ") white no-repeat 10px; }\n  .editor textarea {\n    resize: none;\n    height: 105px; }\n  .editor input, .editor button, .editor textarea {\n    outline: none; }\n    .editor input:focus, .editor button:focus, .editor textarea:focus {\n      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); }\n  .editor button {\n    padding: 12px;\n    margin: 8px 7px -4px;\n    border-radius: 4px;\n    font-size: 13px;\n    text-decoration: none;\n    cursor: pointer;\n    border: none;\n    letter-spacing: 0.3px;\n    -webkit-transition: background-color 0.1s;\n    transition: background-color 0.1s; }\n    .editor button[type=\"submit\"] {\n      background: #20c576;\n      color: white; }\n      .editor button[type=\"submit\"]:active {\n        background: #19995c; }\n    .editor button[type=\"reset\"] {\n      background: #dadada;\n      color: #111; }\n      .editor button[type=\"reset\"]:active {\n        background: #c1c1c1; }\n  .editor a.reset-all {\n    margin-top: auto;\n    text-align: center;\n    color: #919191;\n    text-decoration: none; }\n    .editor a.reset-all:hover {\n      text-decoration: underline; }\n\n.appointment-container {\n  position: absolute;\n  top: 0;\n  width: 81%;\n  left: 83px;\n  padding-top: 19px; }\n\n.appointment-group {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex; }\n\n.appointment {\n  background: #f65f52;\n  border-radius: 4px;\n  border: 1px solid white;\n  padding: 6px 12px;\n  overflow: hidden;\n  position: relative;\n  -webkit-box-flex: 1;\n      -ms-flex: 1;\n          flex: 1;\n  cursor: pointer;\n  color: inherit;\n  text-decoration: none;\n  min-height: 30px;\n  outline: none; }\n  .appointment:focus, .appointment.selected {\n    border-color: transparent;\n    z-index: 300;\n    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23); }\n  .appointment::after {\n    content: ' ';\n    box-shadow: 0 14px 10px 22px #f65f52;\n    display: block;\n    height: 5px;\n    position: absolute;\n    width: 100%;\n    bottom: -5px;\n    left: 0; }\n  .appointment h1 {\n    margin: 0;\n    font-size: 16px;\n    max-width: 100%;\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    float: left;\n    color: white; }\n  .appointment .time {\n    float: right; }\n  .appointment p.description {\n    margin: 5px 0; }\n", ""]);
+	exports.push([module.id, "html, body, ul, ol {\n  margin: 0;\n  padding: 0; }\n\nul, ol {\n  list-style: none; }\n\nhtml {\n  box-sizing: border-box; }\n\n*, *:before, *:after {\n  box-sizing: inherit; }\n\n@font-face {\n  font-family: 'OpenSans';\n  font-style: normal;\n  font-weight: 300;\n  src: url(" + __webpack_require__(511) + ") format(\"truetype\"); }\n\nbody {\n  background: #4a526f;\n  font-family: 'OpenSans', sans-serif; }\n\n.calendar-app {\n  margin: 0 auto 40px;\n  padding: 12px;\n  min-width: 780px;\n  max-width: 1000px; }\n  .calendar-app > h1 {\n    color: white;\n    font-size: 29px;\n    letter-spacing: 1px;\n    margin-bottom: 30px; }\n  .calendar-app .calendar-body {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex; }\n\n.overview {\n  border-radius: 4px;\n  background: white;\n  color: #111;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  -webkit-box-flex: 5;\n      -ms-flex: 5;\n          flex: 5;\n  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.13), 0 18px 30px 0 rgba(0, 0, 0, 0.13);\n  z-index: 100; }\n  .overview > header {\n    border-bottom: 1px solid #e7e7e7;\n    font-size: 20px;\n    padding: 16.8px 39px;\n    letter-spacing: 0.3px; }\n  .overview > article {\n    padding: 12px;\n    color: #dadada;\n    position: relative;\n    overflow: hidden; }\n    .overview > article ul {\n      margin-left: 30px;\n      font-size: 12px;\n      -webkit-user-select: none;\n         -moz-user-select: none;\n          -ms-user-select: none;\n              user-select: none;\n      cursor: default; }\n      .overview > article ul li {\n        height: 18px;\n        margin-bottom: 36px;\n        background: white; }\n        .overview > article ul li::after {\n          border-bottom: 1px solid #dadada;\n          content: '';\n          position: relative;\n          top: -9px;\n          left: 41px;\n          width: 88%;\n          display: block; }\n\n.editor {\n  border-bottom-right-radius: 4px;\n  border-top-right-radius: 4px;\n  background: #f8f8f8;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-flex: 2;\n      -ms-flex: 2;\n          flex: 2;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  padding: 12px;\n  margin: 20px 0;\n  max-width: 233px; }\n  .editor label {\n    margin: 9px 7px 0 7px;\n    font-size: 14px;\n    letter-spacing: 0.3px; }\n  .editor input, .editor textarea {\n    width: 100%;\n    border: 1px solid #dadada;\n    border-radius: 1px;\n    font-size: 20px;\n    color: #919191;\n    margin-top: 5px;\n    padding: 1px 5px; }\n  .editor input {\n    height: 35px; }\n  .editor input[type=\"time\"] {\n    padding-left: 40px;\n    background: url(" + __webpack_require__(512) + ") white no-repeat 10px; }\n  .editor textarea {\n    resize: none;\n    height: 105px; }\n  .editor input, .editor button, .editor textarea {\n    outline: none; }\n    .editor input:focus, .editor button:focus, .editor textarea:focus {\n      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); }\n  .editor button {\n    padding: 12px;\n    margin: 8px 7px -4px;\n    border-radius: 4px;\n    font-size: 13px;\n    text-decoration: none;\n    cursor: pointer;\n    border: none;\n    letter-spacing: 0.3px;\n    -webkit-transition: background-color 0.1s;\n    transition: background-color 0.1s; }\n    .editor button[type=\"submit\"] {\n      background: #20c576;\n      color: white; }\n      .editor button[type=\"submit\"]:active {\n        background: #19995c; }\n    .editor button[type=\"reset\"] {\n      background: #dadada;\n      color: #111; }\n      .editor button[type=\"reset\"]:active {\n        background: #c1c1c1; }\n  .editor a.reset-all {\n    margin-top: auto;\n    text-align: center;\n    color: #919191;\n    text-decoration: none; }\n    .editor a.reset-all:hover {\n      text-decoration: underline; }\n\n.appointment-container {\n  position: absolute;\n  top: 0;\n  width: 81%;\n  left: 83px;\n  padding-top: 19px; }\n\n.appointment-group {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex; }\n\n.appointment {\n  background: #f65f52;\n  border-radius: 4px;\n  border: 1px solid white;\n  padding: 6px 12px;\n  overflow: hidden;\n  position: relative;\n  -webkit-box-flex: 1;\n      -ms-flex: 1;\n          flex: 1;\n  cursor: pointer;\n  color: inherit;\n  text-decoration: none;\n  min-height: 30px;\n  outline: none; }\n  .appointment:focus, .appointment.selected {\n    border-color: transparent;\n    z-index: 300;\n    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23); }\n  .appointment::after {\n    content: ' ';\n    box-shadow: 0 14px 10px 22px #f65f52;\n    display: block;\n    height: 5px;\n    position: absolute;\n    width: 100%;\n    bottom: -5px;\n    left: 0; }\n  .appointment h1 {\n    margin: 0;\n    font-size: 16px;\n    max-width: 100%;\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    float: left;\n    color: white; }\n  .appointment .time {\n    float: right; }\n  .appointment p.description {\n    margin: 5px 0; }\n", ""]);
 	
 	// exports
 
 
 /***/ },
-/* 503 */
+/* 510 */
 /***/ function(module, exports) {
 
 	/*
@@ -31346,19 +32109,19 @@
 
 
 /***/ },
-/* 504 */
+/* 511 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "resources/OpenSans-Light.ttf";
 
 /***/ },
-/* 505 */
+/* 512 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "resources/calendar.svg";
 
 /***/ },
-/* 506 */
+/* 513 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -31608,768 +32371,6 @@
 			URL.revokeObjectURL(oldSrc);
 	}
 
-
-/***/ },
-/* 507 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-	
-	var _react = __webpack_require__(298);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _Overview = __webpack_require__(508);
-	
-	var _Overview2 = _interopRequireDefault(_Overview);
-	
-	var _Editor = __webpack_require__(512);
-	
-	var _Editor2 = _interopRequireDefault(_Editor);
-	
-	var _reactRedux = __webpack_require__(471);
-	
-	var _actions = __webpack_require__(513);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-	
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-	
-	function getDefaultEditor() {
-	  var date = new Date();
-	  var nextHour = (date.getHours() + 1) * 60;
-	  return {
-	    id: date.getTime(),
-	    title: '',
-	    startTime: nextHour,
-	    endTime: nextHour + 30,
-	    description: '',
-	    isNew: true
-	  };
-	}
-	
-	var App = function (_Component) {
-	  _inherits(App, _Component);
-	
-	  function App() {
-	    var _Object$getPrototypeO;
-	
-	    var _temp, _this, _ret;
-	
-	    _classCallCheck(this, App);
-	
-	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-	      args[_key] = arguments[_key];
-	    }
-	
-	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(App)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.state = {
-	      editor: getDefaultEditor()
-	    }, _this.editorReset = function () {
-	      _this.setState({
-	        editor: getDefaultEditor()
-	      });
-	    }, _this.editorSave = function () {
-	      _this.props.dispatch((0, _actions.addAppointment)(_this.state.editor));
-	      _this.editorReset();
-	    }, _this.editorDelete = function (id) {
-	      _this.props.dispatch((0, _actions.removeAppointment)(id));
-	      _this.editorReset();
-	    }, _this.editorSet = function (editor) {
-	      if (editor === null) {
-	        _this.editorReset();
-	        return;
-	      }
-	      _this.setState({
-	        editor: editor
-	      });
-	    }, _this.editorChange = function (key) {
-	      var convert = arguments.length <= 1 || arguments[1] === undefined ? function (x) {
-	        return x;
-	      } : arguments[1];
-	      return function (event) {
-	        _this.setState({
-	          editor: Object.assign({}, _this.state.editor, _defineProperty({}, key, convert(event.target.value)))
-	        });
-	      };
-	    }, _temp), _possibleConstructorReturn(_this, _ret);
-	  }
-	
-	  _createClass(App, [{
-	    key: 'render',
-	    value: function render() {
-	      var _props = this.props;
-	      var appointments = _props.appointments;
-	      var dispatch = _props.dispatch;
-	      var editor = this.state.editor;
-	
-	      return _react2.default.createElement(
-	        'div',
-	        { className: 'calendar-app' },
-	        _react2.default.createElement(
-	          'h1',
-	          null,
-	          'Today\'s appointments'
-	        ),
-	        _react2.default.createElement(
-	          'div',
-	          { className: 'calendar-body' },
-	          _react2.default.createElement(_Overview2.default, {
-	            appointments: appointments,
-	            onSelect: this.editorSet
-	          }),
-	          _react2.default.createElement(_Editor2.default, {
-	            values: editor,
-	            onChange: this.editorChange,
-	            onSave: this.editorSave,
-	            onCancel: this.editorDelete,
-	            reset: function reset() {
-	              return dispatch((0, _actions.deleteAllAppointments)());
-	            }
-	          })
-	        )
-	      );
-	    }
-	  }]);
-	
-	  return App;
-	}(_react.Component);
-	
-	var mapStateToProps = function mapStateToProps(_ref) {
-	  var appointments = _ref.appointments;
-	
-	  return {
-	    appointments: appointments
-	  };
-	};
-	
-	App = (0, _reactRedux.connect)(mapStateToProps)(App);
-	
-	exports.default = App;
-
-/***/ },
-/* 508 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _react = __webpack_require__(298);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _constants = __webpack_require__(496);
-	
-	var _dateformat = __webpack_require__(509);
-	
-	var _dateformat2 = _interopRequireDefault(_dateformat);
-	
-	var _leftPad = __webpack_require__(499);
-	
-	var _leftPad2 = _interopRequireDefault(_leftPad);
-	
-	var _Appointment = __webpack_require__(510);
-	
-	var _Appointment2 = _interopRequireDefault(_Appointment);
-	
-	var _values = __webpack_require__(511);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } } // :D
-	
-	
-	var ONE_HOUR_HEIGHT = parseInt(_values.timeNodeHeight, 10);
-	
-	var timeListLength = _constants.TIME_RANGE_MAX - _constants.TIME_RANGE_MIN + 1;
-	var timeList = Array.from({ length: timeListLength }).map(function (_, index) {
-	  var hour = _constants.TIME_RANGE_MIN + index;
-	  return (0, _leftPad2.default)(hour, 2, 0) + ':00';
-	});
-	
-	function groupByOverlap() {
-	  var currentEndTime = null;
-	  return function (prev, curr) {
-	    if (currentEndTime === null) {
-	      currentEndTime = curr.endTime;
-	      return [[curr]];
-	    }
-	
-	    if (currentEndTime > curr.startTime) {
-	      prev[prev.length - 1].push(curr);
-	    } else {
-	      prev.push([curr]);
-	    }
-	
-	    if (currentEndTime < curr.endTime) {
-	      currentEndTime = curr.endTime;
-	    }
-	
-	    return prev;
-	  };
-	}
-	
-	function calculateGaps() {
-	  var previousEndTime = _constants.TIME_RANGE_MIN * 60;
-	  return function (group) {
-	    var groupStartTime = group[0].startTime;
-	    var topGapTime = groupStartTime - previousEndTime;
-	    var marginTop = topGapTime / 60 * ONE_HOUR_HEIGHT;
-	    previousEndTime = Math.max.apply(Math, _toConsumableArray(group.map(function (_ref) {
-	      var endTime = _ref.endTime;
-	      return endTime;
-	    })));
-	    return {
-	      marginTop: marginTop,
-	      appointments: group.map(function (data) {
-	        return Object.assign({}, data, {
-	          marginTop: (data.startTime - groupStartTime) / 60 * ONE_HOUR_HEIGHT,
-	          height: (data.endTime - data.startTime) / 60 * ONE_HOUR_HEIGHT
-	        });
-	      })
-	    };
-	  };
-	}
-	
-	function stableSortByStart(a, b) {
-	  if (a.startTime === b.startTime) {
-	    return a.id - b.id;
-	  }
-	
-	  return a.startTime - b.startTime;
-	}
-	
-	var Overview = function Overview(_ref2) {
-	  var appointments = _ref2.appointments;
-	  var onSelect = _ref2.onSelect;
-	
-	  var now = new Date();
-	  var today = (0, _dateformat2.default)(now, 'd mmmm yyyy').toLowerCase();
-	
-	  var appointmentsGroupedByOverlap = appointments.sort(stableSortByStart).reduce(groupByOverlap(), []).map(calculateGaps());
-	
-	  return _react2.default.createElement(
-	    'div',
-	    { className: 'overview', onClick: function onClick() {
-	        return onSelect(null);
-	      } },
-	    _react2.default.createElement(
-	      'header',
-	      null,
-	      today
-	    ),
-	    _react2.default.createElement(
-	      'article',
-	      null,
-	      _react2.default.createElement(
-	        'ul',
-	        null,
-	        timeList.map(function (text, index) {
-	          return _react2.default.createElement(
-	            'li',
-	            { key: index },
-	            text
-	          );
-	        })
-	      ),
-	      _react2.default.createElement(
-	        'div',
-	        { className: 'appointment-container' },
-	        appointmentsGroupedByOverlap.map(function (_ref3, index) {
-	          var appointments = _ref3.appointments;
-	          var marginTop = _ref3.marginTop;
-	          return _react2.default.createElement(
-	            'div',
-	            { key: index, className: 'appointment-group', style: { marginTop: marginTop } },
-	            appointments.map(function (data, index) {
-	              return _react2.default.createElement(_Appointment2.default, {
-	                key: index,
-	                values: data,
-	                onSelect: onSelect
-	              });
-	            })
-	          );
-	        })
-	      )
-	    )
-	  );
-	};
-	
-	exports.default = Overview;
-
-/***/ },
-/* 509 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var __WEBPACK_AMD_DEFINE_RESULT__;/*
-	 * Date Format 1.2.3
-	 * (c) 2007-2009 Steven Levithan <stevenlevithan.com>
-	 * MIT license
-	 *
-	 * Includes enhancements by Scott Trenda <scott.trenda.net>
-	 * and Kris Kowal <cixar.com/~kris.kowal/>
-	 *
-	 * Accepts a date, a mask, or a date and a mask.
-	 * Returns a formatted version of the given date.
-	 * The date defaults to the current date/time.
-	 * The mask defaults to dateFormat.masks.default.
-	 */
-	
-	(function(global) {
-	  'use strict';
-	
-	  var dateFormat = (function() {
-	      var token = /d{1,4}|m{1,4}|yy(?:yy)?|([HhMsTt])\1?|[LloSZWN]|'[^']*'|'[^']*'/g;
-	      var timezone = /\b(?:[PMCEA][SDP]T|(?:Pacific|Mountain|Central|Eastern|Atlantic) (?:Standard|Daylight|Prevailing) Time|(?:GMT|UTC)(?:[-+]\d{4})?)\b/g;
-	      var timezoneClip = /[^-+\dA-Z]/g;
-	  
-	      // Regexes and supporting functions are cached through closure
-	      return function (date, mask, utc, gmt) {
-	  
-	        // You can't provide utc if you skip other args (use the 'UTC:' mask prefix)
-	        if (arguments.length === 1 && kindOf(date) === 'string' && !/\d/.test(date)) {
-	          mask = date;
-	          date = undefined;
-	        }
-	  
-	        date = date || new Date;
-	  
-	        if(!(date instanceof Date)) {
-	          date = new Date(date);
-	        }
-	  
-	        if (isNaN(date)) {
-	          throw TypeError('Invalid date');
-	        }
-	  
-	        mask = String(dateFormat.masks[mask] || mask || dateFormat.masks['default']);
-	  
-	        // Allow setting the utc/gmt argument via the mask
-	        var maskSlice = mask.slice(0, 4);
-	        if (maskSlice === 'UTC:' || maskSlice === 'GMT:') {
-	          mask = mask.slice(4);
-	          utc = true;
-	          if (maskSlice === 'GMT:') {
-	            gmt = true;
-	          }
-	        }
-	  
-	        var _ = utc ? 'getUTC' : 'get';
-	        var d = date[_ + 'Date']();
-	        var D = date[_ + 'Day']();
-	        var m = date[_ + 'Month']();
-	        var y = date[_ + 'FullYear']();
-	        var H = date[_ + 'Hours']();
-	        var M = date[_ + 'Minutes']();
-	        var s = date[_ + 'Seconds']();
-	        var L = date[_ + 'Milliseconds']();
-	        var o = utc ? 0 : date.getTimezoneOffset();
-	        var W = getWeek(date);
-	        var N = getDayOfWeek(date);
-	        var flags = {
-	          d:    d,
-	          dd:   pad(d),
-	          ddd:  dateFormat.i18n.dayNames[D],
-	          dddd: dateFormat.i18n.dayNames[D + 7],
-	          m:    m + 1,
-	          mm:   pad(m + 1),
-	          mmm:  dateFormat.i18n.monthNames[m],
-	          mmmm: dateFormat.i18n.monthNames[m + 12],
-	          yy:   String(y).slice(2),
-	          yyyy: y,
-	          h:    H % 12 || 12,
-	          hh:   pad(H % 12 || 12),
-	          H:    H,
-	          HH:   pad(H),
-	          M:    M,
-	          MM:   pad(M),
-	          s:    s,
-	          ss:   pad(s),
-	          l:    pad(L, 3),
-	          L:    pad(Math.round(L / 10)),
-	          t:    H < 12 ? 'a'  : 'p',
-	          tt:   H < 12 ? 'am' : 'pm',
-	          T:    H < 12 ? 'A'  : 'P',
-	          TT:   H < 12 ? 'AM' : 'PM',
-	          Z:    gmt ? 'GMT' : utc ? 'UTC' : (String(date).match(timezone) || ['']).pop().replace(timezoneClip, ''),
-	          o:    (o > 0 ? '-' : '+') + pad(Math.floor(Math.abs(o) / 60) * 100 + Math.abs(o) % 60, 4),
-	          S:    ['th', 'st', 'nd', 'rd'][d % 10 > 3 ? 0 : (d % 100 - d % 10 != 10) * d % 10],
-	          W:    W,
-	          N:    N
-	        };
-	  
-	        return mask.replace(token, function (match) {
-	          if (match in flags) {
-	            return flags[match];
-	          }
-	          return match.slice(1, match.length - 1);
-	        });
-	      };
-	    })();
-	
-	  dateFormat.masks = {
-	    'default':               'ddd mmm dd yyyy HH:MM:ss',
-	    'shortDate':             'm/d/yy',
-	    'mediumDate':            'mmm d, yyyy',
-	    'longDate':              'mmmm d, yyyy',
-	    'fullDate':              'dddd, mmmm d, yyyy',
-	    'shortTime':             'h:MM TT',
-	    'mediumTime':            'h:MM:ss TT',
-	    'longTime':              'h:MM:ss TT Z',
-	    'isoDate':               'yyyy-mm-dd',
-	    'isoTime':               'HH:MM:ss',
-	    'isoDateTime':           'yyyy-mm-dd\'T\'HH:MM:sso',
-	    'isoUtcDateTime':        'UTC:yyyy-mm-dd\'T\'HH:MM:ss\'Z\'',
-	    'expiresHeaderFormat':   'ddd, dd mmm yyyy HH:MM:ss Z'
-	  };
-	
-	  // Internationalization strings
-	  dateFormat.i18n = {
-	    dayNames: [
-	      'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat',
-	      'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
-	    ],
-	    monthNames: [
-	      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
-	      'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
-	    ]
-	  };
-	
-	function pad(val, len) {
-	  val = String(val);
-	  len = len || 2;
-	  while (val.length < len) {
-	    val = '0' + val;
-	  }
-	  return val;
-	}
-	
-	/**
-	 * Get the ISO 8601 week number
-	 * Based on comments from
-	 * http://techblog.procurios.nl/k/n618/news/view/33796/14863/Calculate-ISO-8601-week-and-year-in-javascript.html
-	 *
-	 * @param  {Object} `date`
-	 * @return {Number}
-	 */
-	function getWeek(date) {
-	  // Remove time components of date
-	  var targetThursday = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-	
-	  // Change date to Thursday same week
-	  targetThursday.setDate(targetThursday.getDate() - ((targetThursday.getDay() + 6) % 7) + 3);
-	
-	  // Take January 4th as it is always in week 1 (see ISO 8601)
-	  var firstThursday = new Date(targetThursday.getFullYear(), 0, 4);
-	
-	  // Change date to Thursday same week
-	  firstThursday.setDate(firstThursday.getDate() - ((firstThursday.getDay() + 6) % 7) + 3);
-	
-	  // Check if daylight-saving-time-switch occured and correct for it
-	  var ds = targetThursday.getTimezoneOffset() - firstThursday.getTimezoneOffset();
-	  targetThursday.setHours(targetThursday.getHours() - ds);
-	
-	  // Number of weeks between target Thursday and first Thursday
-	  var weekDiff = (targetThursday - firstThursday) / (86400000*7);
-	  return 1 + Math.floor(weekDiff);
-	}
-	
-	/**
-	 * Get ISO-8601 numeric representation of the day of the week
-	 * 1 (for Monday) through 7 (for Sunday)
-	 * 
-	 * @param  {Object} `date`
-	 * @return {Number}
-	 */
-	function getDayOfWeek(date) {
-	  var dow = date.getDay();
-	  if(dow === 0) {
-	    dow = 7;
-	  }
-	  return dow;
-	}
-	
-	/**
-	 * kind-of shortcut
-	 * @param  {*} val
-	 * @return {String}
-	 */
-	function kindOf(val) {
-	  if (val === null) {
-	    return 'null';
-	  }
-	
-	  if (val === undefined) {
-	    return 'undefined';
-	  }
-	
-	  if (typeof val !== 'object') {
-	    return typeof val;
-	  }
-	
-	  if (Array.isArray(val)) {
-	    return 'array';
-	  }
-	
-	  return {}.toString.call(val)
-	    .slice(8, -1).toLowerCase();
-	};
-	
-	
-	
-	  if (true) {
-	    !(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
-	      return dateFormat;
-	    }.call(exports, __webpack_require__, exports, module), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
-	  } else if (typeof exports === 'object') {
-	    module.exports = dateFormat;
-	  } else {
-	    global.dateFormat = dateFormat;
-	  }
-	})(this);
-
-
-/***/ },
-/* 510 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _react = __webpack_require__(298);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _utils = __webpack_require__(498);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var Appointment = function Appointment(_ref) {
-	  var values = _ref.values;
-	  var onSelect = _ref.onSelect;
-	  var title = values.title;
-	  var startTime = values.startTime;
-	  var endTime = values.endTime;
-	  var description = values.description;
-	  var marginTop = values.marginTop;
-	  var height = values.height;
-	
-	  var start = (0, _utils.integerTimeToString)(startTime);
-	  var end = (0, _utils.integerTimeToString)(endTime);
-	  var time = start + ' - ' + end;
-	  return _react2.default.createElement(
-	    'a',
-	    {
-	      href: '#',
-	      className: 'appointment',
-	      style: { marginTop: marginTop, height: height },
-	      onClick: function onClick(event) {
-	        event.preventDefault();
-	        event.stopPropagation();
-	      },
-	      onFocus: function onFocus() {
-	        return onSelect(values);
-	      }
-	    },
-	    _react2.default.createElement(
-	      'h1',
-	      null,
-	      title
-	    ),
-	    _react2.default.createElement(
-	      'div',
-	      { className: 'time' },
-	      time
-	    ),
-	    _react2.default.createElement('br', null),
-	    _react2.default.createElement(
-	      'p',
-	      { className: 'description' },
-	      description
-	    )
-	  );
-	};
-	
-	exports.default = Appointment;
-
-/***/ },
-/* 511 */
-/***/ function(module, exports) {
-
-	module.exports={"blue":"#4a526f","green":"#20c576","red":"#f65f52","black":"#111","lightGray":"#f8f8f8","darkGray":"#dadada","margin":"20px","padding":"12px","borderRadius":"4px","borderRadiusSmall":"1px","inputHeight":"35px","timeNodeBase":"18px","timeNodeGap":"36px","timeNodeHeight":"54px"}
-
-/***/ },
-/* 512 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _react = __webpack_require__(298);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _utils = __webpack_require__(498);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var Editor = function Editor(_ref) {
-	  var onChange = _ref.onChange;
-	  var onSave = _ref.onSave;
-	  var onCancel = _ref.onCancel;
-	  var reset = _ref.reset;
-	  var values = _ref.values;
-	  var id = values.id;
-	  var title = values.title;
-	  var startTime = values.startTime;
-	  var endTime = values.endTime;
-	  var description = values.description;
-	  var isNew = values.isNew;
-	
-	
-	  var onSubmit = function onSubmit(event) {
-	    event.preventDefault();
-	    onSave();
-	  };
-	
-	  return _react2.default.createElement(
-	    'form',
-	    {
-	      className: 'editor',
-	      onSubmit: onSubmit,
-	      onReset: function onReset() {
-	        return onCancel(id);
-	      }
-	    },
-	    _react2.default.createElement(
-	      'label',
-	      null,
-	      'Title',
-	      _react2.default.createElement('br', null),
-	      _react2.default.createElement('input', {
-	        type: 'text',
-	        value: title,
-	        onChange: onChange('title'),
-	        required: true
-	      })
-	    ),
-	    _react2.default.createElement(
-	      'label',
-	      null,
-	      'Start time',
-	      _react2.default.createElement('br', null),
-	      _react2.default.createElement('input', {
-	        type: 'time',
-	        value: (0, _utils.integerTimeToString)(startTime),
-	        onChange: onChange('startTime', _utils.stringTimeToInteger),
-	        required: true
-	      })
-	    ),
-	    _react2.default.createElement(
-	      'label',
-	      null,
-	      'End time',
-	      _react2.default.createElement('br', null),
-	      _react2.default.createElement('input', {
-	        type: 'time',
-	        value: (0, _utils.integerTimeToString)(endTime),
-	        onChange: onChange('endTime', _utils.stringTimeToInteger),
-	        required: true
-	      })
-	    ),
-	    _react2.default.createElement(
-	      'label',
-	      null,
-	      'Description',
-	      _react2.default.createElement('br', null),
-	      _react2.default.createElement('textarea', {
-	        onChange: onChange('description'),
-	        required: true,
-	        value: description
-	      })
-	    ),
-	    _react2.default.createElement(
-	      'button',
-	      { type: 'submit' },
-	      'Save'
-	    ),
-	    _react2.default.createElement(
-	      'button',
-	      { type: 'reset' },
-	      isNew ? 'Cancel' : 'Delete'
-	    ),
-	    _react2.default.createElement(
-	      'a',
-	      { href: '#', className: 'reset-all', onClick: reset },
-	      'Delete all'
-	    )
-	  );
-	};
-	
-	exports.default = Editor;
-
-/***/ },
-/* 513 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.deleteAllAppointments = exports.removeAppointment = exports.addAppointment = undefined;
-	
-	var _constants = __webpack_require__(496);
-	
-	var addAppointment = exports.addAppointment = function addAppointment(appointment) {
-	  var id = appointment.id;
-	  var title = appointment.title;
-	  var startTime = appointment.startTime;
-	  var endTime = appointment.endTime;
-	  var description = appointment.description;
-	
-	  return {
-	    type: _constants.ActionTypes.ADD_APPOINTMENT,
-	    id: id,
-	    title: title,
-	    startTime: startTime,
-	    endTime: endTime,
-	    description: description
-	  };
-	};
-	
-	var removeAppointment = exports.removeAppointment = function removeAppointment(id) {
-	  return {
-	    type: _constants.ActionTypes.REMOVE_APPOINTMENT,
-	    id: id
-	  };
-	};
-	
-	var deleteAllAppointments = exports.deleteAllAppointments = function deleteAllAppointments() {
-	  return {
-	    type: _constants.ActionTypes.DELETE_ALL_APPOINTMENTS
-	  };
-	};
 
 /***/ }
 /******/ ]);
