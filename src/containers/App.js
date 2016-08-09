@@ -6,7 +6,7 @@ import {addAppointment, removeAppointment, deleteAllAppointments} from '../actio
 
 function getDefaultEditor() {
   const date = new Date();
-  const nextHour = (date.getHours() + 1) * 60;
+  const nextHour = ((date.getHours() + 1) % 24) * 60;
   return {
     id: date.getTime(),
     title: '',
