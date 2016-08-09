@@ -54,12 +54,20 @@ function calculateGaps() {
   }
 }
 
+function stableSortByStart(a, b) {
+  if (a.startTime === b.startTime) {
+    return a.id - b.id;
+  }
+
+  return a.startTime - b.startTime;
+}
+
 const Overview = ({ appointments, onSelect }) => {
   const now = new Date();
   const today = dateFormat(now, 'd mmmm yyyy').toLowerCase();
 
   const appointmentsGroupedByOverlap = appointments
-    .sort(({ startTime: a }, { startTime: b }) => a - b)
+    .sort(stableSortByStart)
     .reduce(groupByOverlap(), [])
     .map(calculateGaps());
 

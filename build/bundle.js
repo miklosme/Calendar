@@ -31288,7 +31288,7 @@
 	
 	
 	// module
-	exports.push([module.id, "html, body, ul, ol {\n  margin: 0;\n  padding: 0; }\n\nul, ol {\n  list-style: none; }\n\nhtml {\n  box-sizing: border-box; }\n\n*, *:before, *:after {\n  box-sizing: inherit; }\n\n@font-face {\n  font-family: 'OpenSans';\n  font-style: normal;\n  font-weight: 300;\n  src: url(" + __webpack_require__(504) + ") format(\"truetype\"); }\n\nbody {\n  background: #4a526f;\n  font-family: 'OpenSans', sans-serif; }\n\n.calendar-app {\n  margin: 0 auto 40px;\n  padding: 12px;\n  min-width: 780px;\n  max-width: 1000px; }\n  .calendar-app > h1 {\n    color: white;\n    font-size: 29px;\n    letter-spacing: 1px;\n    margin-bottom: 30px; }\n  .calendar-app .calendar-body {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex; }\n\n.overview {\n  border-radius: 4px;\n  background: white;\n  color: #111;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  -webkit-box-flex: 5;\n      -ms-flex: 5;\n          flex: 5;\n  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.13), 0 18px 30px 0 rgba(0, 0, 0, 0.13);\n  z-index: 100; }\n  .overview > header {\n    border-bottom: 1px solid #e7e7e7;\n    font-size: 20px;\n    padding: 16.8px 39px;\n    letter-spacing: 0.3px; }\n  .overview > article {\n    padding: 12px;\n    color: #dadada;\n    position: relative;\n    overflow: hidden; }\n    .overview > article ul {\n      margin-left: 30px;\n      font-size: 12px;\n      -webkit-user-select: none;\n         -moz-user-select: none;\n          -ms-user-select: none;\n              user-select: none;\n      cursor: default; }\n      .overview > article ul li {\n        height: 18px;\n        margin-bottom: 36px;\n        background: white; }\n        .overview > article ul li::after {\n          border-bottom: 1px solid #dadada;\n          content: '';\n          position: relative;\n          top: -9px;\n          left: 41px;\n          width: 88%;\n          display: block; }\n\n.editor {\n  border-bottom-right-radius: 4px;\n  border-top-right-radius: 4px;\n  background: #f8f8f8;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-flex: 2;\n      -ms-flex: 2;\n          flex: 2;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  padding: 12px;\n  margin: 20px 0;\n  max-width: 233px; }\n  .editor label {\n    margin: 9px 7px 0 7px;\n    font-size: 14px;\n    letter-spacing: 0.3px; }\n  .editor input, .editor textarea {\n    width: 100%;\n    border: 1px solid #dadada;\n    border-radius: 1px;\n    font-size: 20px;\n    color: #919191;\n    margin-top: 5px;\n    padding: 1px 5px; }\n  .editor input {\n    height: 35px; }\n  .editor input[type=\"time\"] {\n    padding-left: 40px;\n    background: url(" + __webpack_require__(505) + ") white no-repeat 10px; }\n  .editor textarea {\n    resize: none;\n    height: 105px; }\n  .editor input, .editor button, .editor textarea {\n    outline: 0; }\n    .editor input:focus, .editor button:focus, .editor textarea:focus {\n      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); }\n  .editor button {\n    padding: 12px;\n    margin: 8px 7px -4px;\n    border-radius: 4px;\n    font-size: 13px;\n    text-decoration: none;\n    cursor: pointer;\n    border: none;\n    letter-spacing: 0.3px;\n    -webkit-transition: background-color 0.1s;\n    transition: background-color 0.1s; }\n    .editor button[type=\"submit\"] {\n      background: #20c576;\n      color: white; }\n      .editor button[type=\"submit\"]:active {\n        background: #19995c; }\n    .editor button[type=\"reset\"] {\n      background: #dadada;\n      color: #111; }\n      .editor button[type=\"reset\"]:active {\n        background: #c1c1c1; }\n\n.appointment-container {\n  position: absolute;\n  top: 0;\n  width: 81%;\n  left: 83px;\n  padding-top: 19px; }\n\n.appointment-group {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex; }\n\n.appointment {\n  background: #f65f52;\n  border-radius: 4px;\n  border: 1px solid white;\n  padding: 6px 12px;\n  overflow: hidden;\n  position: relative;\n  -webkit-box-flex: 1;\n      -ms-flex: 1;\n          flex: 1;\n  cursor: pointer;\n  color: inherit;\n  text-decoration: none;\n  min-height: 30px; }\n  .appointment::after {\n    content: ' ';\n    box-shadow: 0 14px 10px 22px #f65f52;\n    display: block;\n    height: 5px;\n    position: absolute;\n    width: 100%;\n    bottom: -5px;\n    left: 0; }\n  .appointment h1 {\n    margin: 0;\n    font-size: 16px;\n    max-width: 70%;\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    float: left;\n    color: white; }\n  .appointment .time {\n    float: right; }\n  .appointment p.description {\n    margin: 5px 0; }\n", ""]);
+	exports.push([module.id, "html, body, ul, ol {\n  margin: 0;\n  padding: 0; }\n\nul, ol {\n  list-style: none; }\n\nhtml {\n  box-sizing: border-box; }\n\n*, *:before, *:after {\n  box-sizing: inherit; }\n\n@font-face {\n  font-family: 'OpenSans';\n  font-style: normal;\n  font-weight: 300;\n  src: url(" + __webpack_require__(504) + ") format(\"truetype\"); }\n\nbody {\n  background: #4a526f;\n  font-family: 'OpenSans', sans-serif; }\n\n.calendar-app {\n  margin: 0 auto 40px;\n  padding: 12px;\n  min-width: 780px;\n  max-width: 1000px; }\n  .calendar-app > h1 {\n    color: white;\n    font-size: 29px;\n    letter-spacing: 1px;\n    margin-bottom: 30px; }\n  .calendar-app .calendar-body {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex; }\n\n.overview {\n  border-radius: 4px;\n  background: white;\n  color: #111;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  -webkit-box-flex: 5;\n      -ms-flex: 5;\n          flex: 5;\n  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.13), 0 18px 30px 0 rgba(0, 0, 0, 0.13);\n  z-index: 100; }\n  .overview > header {\n    border-bottom: 1px solid #e7e7e7;\n    font-size: 20px;\n    padding: 16.8px 39px;\n    letter-spacing: 0.3px; }\n  .overview > article {\n    padding: 12px;\n    color: #dadada;\n    position: relative;\n    overflow: hidden; }\n    .overview > article ul {\n      margin-left: 30px;\n      font-size: 12px;\n      -webkit-user-select: none;\n         -moz-user-select: none;\n          -ms-user-select: none;\n              user-select: none;\n      cursor: default; }\n      .overview > article ul li {\n        height: 18px;\n        margin-bottom: 36px;\n        background: white; }\n        .overview > article ul li::after {\n          border-bottom: 1px solid #dadada;\n          content: '';\n          position: relative;\n          top: -9px;\n          left: 41px;\n          width: 88%;\n          display: block; }\n\n.editor {\n  border-bottom-right-radius: 4px;\n  border-top-right-radius: 4px;\n  background: #f8f8f8;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-flex: 2;\n      -ms-flex: 2;\n          flex: 2;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  padding: 12px;\n  margin: 20px 0;\n  max-width: 233px; }\n  .editor label {\n    margin: 9px 7px 0 7px;\n    font-size: 14px;\n    letter-spacing: 0.3px; }\n  .editor input, .editor textarea {\n    width: 100%;\n    border: 1px solid #dadada;\n    border-radius: 1px;\n    font-size: 20px;\n    color: #919191;\n    margin-top: 5px;\n    padding: 1px 5px; }\n  .editor input {\n    height: 35px; }\n  .editor input[type=\"time\"] {\n    padding-left: 40px;\n    background: url(" + __webpack_require__(505) + ") white no-repeat 10px; }\n  .editor textarea {\n    resize: none;\n    height: 105px; }\n  .editor input, .editor button, .editor textarea {\n    outline: 0; }\n    .editor input:focus, .editor button:focus, .editor textarea:focus {\n      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); }\n  .editor button {\n    padding: 12px;\n    margin: 8px 7px -4px;\n    border-radius: 4px;\n    font-size: 13px;\n    text-decoration: none;\n    cursor: pointer;\n    border: none;\n    letter-spacing: 0.3px;\n    -webkit-transition: background-color 0.1s;\n    transition: background-color 0.1s; }\n    .editor button[type=\"submit\"] {\n      background: #20c576;\n      color: white; }\n      .editor button[type=\"submit\"]:active {\n        background: #19995c; }\n    .editor button[type=\"reset\"] {\n      background: #dadada;\n      color: #111; }\n      .editor button[type=\"reset\"]:active {\n        background: #c1c1c1; }\n\n.appointment-container {\n  position: absolute;\n  top: 0;\n  width: 81%;\n  left: 83px;\n  padding-top: 19px; }\n\n.appointment-group {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex; }\n\n.appointment {\n  background: #f65f52;\n  border-radius: 4px;\n  border: 1px solid white;\n  padding: 6px 12px;\n  overflow: hidden;\n  position: relative;\n  -webkit-box-flex: 1;\n      -ms-flex: 1;\n          flex: 1;\n  cursor: pointer;\n  color: inherit;\n  text-decoration: none;\n  min-height: 30px; }\n  .appointment::after {\n    content: ' ';\n    box-shadow: 0 14px 10px 22px #f65f52;\n    display: block;\n    height: 5px;\n    position: absolute;\n    width: 100%;\n    bottom: -5px;\n    left: 0; }\n  .appointment h1 {\n    margin: 0;\n    font-size: 16px;\n    max-width: 100%;\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    float: left;\n    color: white; }\n  .appointment .time {\n    float: right; }\n  .appointment p.description {\n    margin: 5px 0; }\n", ""]);
 	
 	// exports
 
@@ -31661,7 +31661,8 @@
 	    title: '',
 	    startTime: nextHour,
 	    endTime: nextHour + 30,
-	    description: ''
+	    description: '',
+	    isDefault: true
 	  };
 	}
 	
@@ -31682,7 +31683,6 @@
 	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(App)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.state = {
 	      editor: getDefaultEditor()
 	    }, _this.editorSave = function () {
-	      console.log(_this.state.editor.id);
 	      _this.props.dispatch((0, _actions.addAppointment)(_this.state.editor));
 	      _this.setState({
 	        editor: getDefaultEditor()
@@ -31693,7 +31693,6 @@
 	        editor: getDefaultEditor()
 	      });
 	    }, _this.setEditor = function (editor) {
-	      console.log(editor);
 	      _this.setState({
 	        editor: editor
 	      });
@@ -31844,6 +31843,14 @@
 	  };
 	}
 	
+	function stableSortByStart(a, b) {
+	  if (a.startTime === b.startTime) {
+	    return a.id - b.id;
+	  }
+	
+	  return a.startTime - b.startTime;
+	}
+	
 	var Overview = function Overview(_ref2) {
 	  var appointments = _ref2.appointments;
 	  var onSelect = _ref2.onSelect;
@@ -31851,11 +31858,7 @@
 	  var now = new Date();
 	  var today = (0, _dateformat2.default)(now, 'd mmmm yyyy').toLowerCase();
 	
-	  var appointmentsGroupedByOverlap = appointments.sort(function (_ref3, _ref4) {
-	    var a = _ref3.startTime;
-	    var b = _ref4.startTime;
-	    return a - b;
-	  }).reduce(groupByOverlap(), []).map(calculateGaps());
+	  var appointmentsGroupedByOverlap = appointments.sort(stableSortByStart).reduce(groupByOverlap(), []).map(calculateGaps());
 	
 	  return _react2.default.createElement(
 	    'div',
@@ -31882,9 +31885,9 @@
 	      _react2.default.createElement(
 	        'div',
 	        { className: 'appointment-container' },
-	        appointmentsGroupedByOverlap.map(function (_ref5, index) {
-	          var appointments = _ref5.appointments;
-	          var marginTop = _ref5.marginTop;
+	        appointmentsGroupedByOverlap.map(function (_ref3, index) {
+	          var appointments = _ref3.appointments;
+	          var marginTop = _ref3.marginTop;
 	          return _react2.default.createElement(
 	            'div',
 	            { key: index, className: 'appointment-group', style: { marginTop: marginTop } },
@@ -32219,15 +32222,17 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
-	var Editor = function Editor(_ref) {
-	  var onChange = _ref.onChange;
-	  var onSave = _ref.onSave;
-	  var onCancel = _ref.onCancel;
-	  var id = _ref.id;
-	  var title = _ref.title;
-	  var startTime = _ref.startTime;
-	  var endTime = _ref.endTime;
-	  var description = _ref.description;
+	var Editor = function Editor(props) {
+	  var onChange = props.onChange;
+	  var onSave = props.onSave;
+	  var onCancel = props.onCancel;
+	  var id = props.id;
+	  var title = props.title;
+	  var startTime = props.startTime;
+	  var endTime = props.endTime;
+	  var description = props.description;
+	  var isDefault = props.isDefault;
+	
 	
 	  var onSubmit = function onSubmit(event) {
 	    event.preventDefault();
@@ -32298,7 +32303,7 @@
 	    _react2.default.createElement(
 	      'button',
 	      { type: 'reset' },
-	      id ? 'Delete' : 'Cancel'
+	      isDefault ? 'Cancel' : 'Delete'
 	    )
 	  );
 	};
@@ -32319,6 +32324,7 @@
 	var _constants = __webpack_require__(496);
 	
 	var addAppointment = exports.addAppointment = function addAppointment(appointment) {
+	  var id = appointment.id;
 	  var title = appointment.title;
 	  var startTime = appointment.startTime;
 	  var endTime = appointment.endTime;
@@ -32326,7 +32332,7 @@
 	
 	  return {
 	    type: _constants.ActionTypes.ADD_APPOINTMENT,
-	    id: Date.now(),
+	    id: id,
 	    title: title,
 	    startTime: startTime,
 	    endTime: endTime,

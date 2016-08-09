@@ -13,6 +13,7 @@ function getDefaultEditor() {
     startTime: nextHour,
     endTime: nextHour + 30,
     description: '',
+    isDefault: true,
   };
 }
 
@@ -23,7 +24,6 @@ class App extends Component {
   };
 
   editorSave = () => {
-    console.log(this.state.editor.id);
     this.props.dispatch(addAppointment(this.state.editor));
     this.setState({
       editor: getDefaultEditor(),
@@ -38,7 +38,6 @@ class App extends Component {
   };
 
   setEditor = editor => {
-    console.log(editor);
     this.setState({
       editor,
     });
