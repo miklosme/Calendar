@@ -31931,7 +31931,14 @@
 	    ),
 	    _react2.default.createElement(
 	      'a',
-	      { href: '#', className: 'reset-all', onClick: reset },
+	      {
+	        href: '#',
+	        className: 'reset-all',
+	        onClick: function onClick(event) {
+	          event.preventDefault();
+	          reset();
+	        }
+	      },
 	      'Delete all'
 	    )
 	  );
@@ -32005,7 +32012,6 @@
 	
 	  store.subscribe(function () {
 	    var state = store.getState();
-	    console.log(JSON.stringify(state));
 	    localStorage.setItem(_constants.STORAGE_KEY, JSON.stringify(state));
 	  });
 	

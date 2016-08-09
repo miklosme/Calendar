@@ -67,7 +67,16 @@ const Editor = ({ onChange, onSave, onCancel, reset, values }) => {
       <button type="reset">
         {isNew ? 'Cancel' : 'Delete'}
       </button>
-      <a href="#" className="reset-all" onClick={reset}>Delete all</a>
+      <a
+        href="#"
+        className="reset-all"
+        onClick={event=> {
+          event.preventDefault();
+          reset();
+        }}
+      >
+        Delete all
+      </a>
     </form>
   )
 };
