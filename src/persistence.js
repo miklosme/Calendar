@@ -14,8 +14,3 @@ export function createPersistentStore(reducer) {
 
   return store;
 }
-
-window.clearStorage = () => {
-  localStorage.removeItem(STORAGE_KEY);
-  window.location.reload();
-};

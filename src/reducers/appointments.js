@@ -20,6 +20,9 @@ const events = (state = [], action) => {
     case AT.REMOVE_APPOINTMENT:
       return state.filter(matchById);
 
+    case AT.DELETE_ALL_APPOINTMENTS:
+      return [];
+
     default:
       return state
   }

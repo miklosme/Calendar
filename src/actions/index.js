@@ -18,3 +18,7 @@ export const removeAppointment = id => {
     id,
   }
 };
+
+export const deleteAllAppointments = () => ({
+  type: AT.DELETE_ALL_APPOINTMENTS,
+});

@@ -77,4 +77,15 @@
       }
     }
   }
+
+  a.reset-all {
+    margin-top: auto;
+    text-align: center;
+    color: lighten($black, 50%);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }

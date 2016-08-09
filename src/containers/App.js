@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import Overview from '../components/Overview';
 import Editor from '../components/Editor';
 import {connect} from 'react-redux';
-import {addAppointment, removeAppointment} from '../actions';
+import {addAppointment, removeAppointment, deleteAllAppointments} from '../actions';
 
 function getDefaultEditor() {
   const date = new Date();
@@ -13,7 +13,7 @@ function getDefaultEditor() {
     startTime: nextHour,
     endTime: nextHour + 30,
     description: '',
-    isDefault: true,
+    isNew: true,
   };
 }
 
@@ -37,7 +37,7 @@ class App extends Component {
     });
   };
 
-  setEditor = editor => {
+  editorSet = editor => {
     this.setState({
       editor,
     });
@@ -52,7 +52,7 @@ class App extends Component {
   };
 
   render() {
-    const { appointments } = this.props;
+    const { appointments, dispatch } = this.props;
     const { editor } = this.state;
     return (
       <div className="calendar-app">
@@ -60,13 +60,14 @@ class App extends Component {
         <div className="calendar-body">
           <Overview
             appointments={appointments}
-            onSelect={this.setEditor}
+            onSelect={this.editorSet}
           />
           <Editor
-            {...editor}
+            values={editor}
             onChange={this.editorChange}
             onSave={this.editorSave}
             onCancel={this.editorDelete}
+            reset={() => dispatch(deleteAllAppointments())}
           />
         </div>
       </div>

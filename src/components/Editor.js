@@ -1,18 +1,15 @@
 import React from 'react';
 import {integerTimeToString, stringTimeToInteger} from '../utils';
 
-const Editor = props => {
+const Editor = ({ onChange, onSave, onCancel, reset, values }) => {
   const {
-    onChange,
-    onSave,
-    onCancel,
     id,
     title,
     startTime,
     endTime,
     description,
-    isDefault
-  } = props;
+    isNew,
+  } = values;
 
   const onSubmit = event => {
     event.preventDefault();
@@ -68,8 +65,9 @@ const Editor = props => {
         Save
       </button>
       <button type="reset">
-        {isDefault ? 'Cancel' : 'Delete'}
+        {isNew ? 'Cancel' : 'Delete'}
       </button>
+      <a href="#" className="reset-all" onClick={reset}>Delete all</a>
     </form>
   )
 };
