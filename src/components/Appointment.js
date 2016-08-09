@@ -1,7 +1,8 @@
 import React from 'react';
 import {integerTimeToString} from '../utils';
 
-const Appointment = ({ id, title, startTime, endTime, description, marginTop, height, onSelect }) => {
+const Appointment = ({ values, onSelect }) => {
+  const { title, startTime, endTime, description, marginTop, height } = values;
   const start = integerTimeToString(startTime);
   const end = integerTimeToString(endTime);
   const time = `${start} - ${end}`;
@@ -12,8 +13,9 @@ const Appointment = ({ id, title, startTime, endTime, description, marginTop, he
       style={{ marginTop, height }}
       onClick={event => {
         event.preventDefault();
-        onSelect({ id, title, startTime, endTime, description });
+        event.stopPropagation();
       }}
+      onFocus={() => onSelect(values)}
     >
       <h1>{title}</h1>
       <div className="time">{time}</div>

@@ -23,21 +23,27 @@ class App extends Component {
     editor: getDefaultEditor(),
   };
 
-  editorSave = () => {
-    this.props.dispatch(addAppointment(this.state.editor));
+  editorReset = () => {
     this.setState({
       editor: getDefaultEditor(),
     });
+  };
+
+  editorSave = () => {
+    this.props.dispatch(addAppointment(this.state.editor));
+    this.editorReset();
   };
 
   editorDelete = id => {
     this.props.dispatch(removeAppointment(id));
-    this.setState({
-      editor: getDefaultEditor(),
-    });
+    this.editorReset();
   };
 
   editorSet = editor => {
+    if (editor === null) {
+      this.editorReset();
+      return;
+    }
     this.setState({
       editor,
     });

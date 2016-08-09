@@ -72,7 +72,7 @@ const Overview = ({ appointments, onSelect }) => {
     .map(calculateGaps());
 
   return (
-    <div className="overview">
+    <div className="overview" onClick={() => onSelect(null)}>
       <header>{today}</header>
       <article>
         <ul>
@@ -82,7 +82,11 @@ const Overview = ({ appointments, onSelect }) => {
           {appointmentsGroupedByOverlap.map(({ appointments, marginTop }, index) => (
             <div key={index} className="appointment-group" style={{ marginTop }}>
               {appointments.map((data, index) => (
-                <Appointment key={index} {...data} onSelect={onSelect}/>
+                <Appointment
+                  key={index}
+                  values={data}
+                  onSelect={onSelect}
+                />
               ))}
             </div>
           ))}
