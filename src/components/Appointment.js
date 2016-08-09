@@ -1,17 +1,25 @@
 import React from 'react';
-import { integerTimeToString } from '../utils';
+import {integerTimeToString} from '../utils';
 
-const Appointment = ({ title, startTime, endTime, description, marginTop, height }) => {
+const Appointment = ({ id, title, startTime, endTime, description, marginTop, height, onSelect }) => {
   const start = integerTimeToString(startTime);
   const end = integerTimeToString(endTime);
   const time = `${start} - ${end}`;
   return (
-    <div className="appointment" style={{ marginTop, height }} >
+    <a
+      href="#"
+      className="appointment"
+      style={{ marginTop, height }}
+      onClick={event => {
+        event.preventDefault();
+        onSelect({ id, title, startTime, endTime, description });
+      }}
+    >
       <h1>{title}</h1>
       <div className="time">{time}</div>
       <br/>
       <p className="description">{description}</p>
-    </div>
+    </a>
   );
 };
 

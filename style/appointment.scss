@@ -1,12 +1,29 @@
 @import 'values.scss';
 
+.appointment-container {
+  position: absolute;
+  top: 0;
+  width: 81%;
+  left: 83px;
+  padding-top: $padding + $time-node-base / 2 - 2px;
+}
+
+.appointment-group {
+  display: flex;
+}
+
 .appointment {
   background: $red;
   border-radius: $border-radius;
+  border: 1px solid white;
   padding: $padding / 2 $padding;
   overflow: hidden;
   position: relative;
   flex: 1;
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+  min-height: 30px;
 
   &::after {
     content: ' ';
@@ -17,10 +34,6 @@
     width: 100%;
     bottom: -5px;
     left: 0;
-  }
-
-  & + & {
-    margin-left: 5px;
   }
 
   h1 {

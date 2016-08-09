@@ -2,6 +2,7 @@ import keyMirror from 'keymirror';
 
 export const ActionTypes = keyMirror({
   ADD_APPOINTMENT: null,
+  REMOVE_APPOINTMENT: null,
 });
 
 export const STORAGE_KEY = 'calendar-app-storage-key';

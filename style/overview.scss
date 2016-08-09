@@ -23,21 +23,11 @@
     position: relative;
     overflow: hidden;
 
-    .appointment-container {
-      position: absolute;
-      top: 0;
-      width: 81%;
-      left: 86px;
-      padding-top: $padding + $time-node-base / 2 - 2px;
-
-      .appointment-group {
-        display: flex;
-      }
-    }
-
     ul {
       margin-left: $margin * 1.5;
       font-size: 12px;
+      user-select: none;
+      cursor: default;
 
       li {
         height: $time-node-base;

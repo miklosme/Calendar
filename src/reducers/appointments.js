@@ -2,13 +2,15 @@ import {ActionTypes as AT} from '../constants';
 import { stringTimeToInteger } from '../utils';
 
 const events = (state = [], action) => {
+  const matchById = ({ id }) => id !== action.id;
+
   switch (action.type) {
     case AT.ADD_APPOINTMENT:
       const { id, title, startTime, endTime, description } = action;
       const time1 = stringTimeToInteger(startTime);
       const time2 = stringTimeToInteger(endTime);
       return [
-        ...state,
+        ...state.filter(matchById),
         {
           id,
           title,
@@ -17,6 +19,10 @@ const events = (state = [], action) => {
           description,
         }
       ];
+
+    case AT.REMOVE_APPOINTMENT:
+      return state.filter(matchById);
+
     default:
       return state
   }

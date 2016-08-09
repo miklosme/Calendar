@@ -3,7 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import calendarApp from './reducers';
-import App from './components/App';
+import App from './containers/App';
 import { createPersistentStore } from './persistence';
 
 import '../style/index.scss';

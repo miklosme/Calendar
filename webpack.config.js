@@ -17,7 +17,8 @@ module.exports = {
         loader: 'babel',
         exclude: /node_modules/,
         query: {
-          presets: ['es2015', 'react']
+          presets: ['es2015', 'react'],
+          plugins: ['transform-class-properties']
         }
       },
       {
@@ -35,5 +36,17 @@ module.exports = {
       },
     ]
   },
-  plugins: PROD ? [new webpack.optimize.UglifyJsPlugin({ minimize: true })] : []
+  plugins: PROD ? [
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify('production')
+      }
+    }),
+    new webpack.optimize.UglifyJsPlugin({
+      minimize: true,
+      compress: {
+        warnings: true
+      }
+    })
+  ] : []
 };

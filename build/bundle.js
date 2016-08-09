@@ -62,13 +62,13 @@
 	
 	var _reducers2 = _interopRequireDefault(_reducers);
 	
-	var _App = __webpack_require__(500);
+	var _App = __webpack_require__(507);
 	
 	var _App2 = _interopRequireDefault(_App);
 	
-	var _persistence = __webpack_require__(513);
+	var _persistence = __webpack_require__(500);
 	
-	__webpack_require__(504);
+	__webpack_require__(501);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -31005,6 +31005,11 @@
 	  var state = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
 	  var action = arguments[1];
 	
+	  var matchById = function matchById(_ref) {
+	    var id = _ref.id;
+	    return id !== action.id;
+	  };
+	
 	  switch (action.type) {
 	    case _constants.ActionTypes.ADD_APPOINTMENT:
 	      var id = action.id;
@@ -31015,13 +31020,17 @@
 	
 	      var time1 = (0, _utils.stringTimeToInteger)(startTime);
 	      var time2 = (0, _utils.stringTimeToInteger)(endTime);
-	      return [].concat(_toConsumableArray(state), [{
+	      return [].concat(_toConsumableArray(state.filter(matchById)), [{
 	        id: id,
 	        title: title,
 	        startTime: Math.min(time1, time2),
 	        endTime: Math.max(time1, time2),
 	        description: description
 	      }]);
+	
+	    case _constants.ActionTypes.REMOVE_APPOINTMENT:
+	      return state.filter(matchById);
+	
 	    default:
 	      return state;
 	  }
@@ -31047,7 +31056,8 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var ActionTypes = exports.ActionTypes = (0, _keymirror2.default)({
-	  ADD_APPOINTMENT: null
+	  ADD_APPOINTMENT: null,
+	  REMOVE_APPOINTMENT: null
 	});
 	
 	var STORAGE_KEY = exports.STORAGE_KEY = 'calendar-app-storage-key';
@@ -31152,6 +31162,7 @@
 	}
 	
 	function integerTimeToString(integer) {
+	  console.log('intergeg', integer);
 	  var hours = Math.floor(integer / 60);
 	  var minutes = integer % 60;
 	  return (0, _leftPad2.default)(hours, 2, 0) + ':' + (0, _leftPad2.default)(minutes, 2, 0);
@@ -31219,351 +31230,43 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	exports.createPersistentStore = createPersistentStore;
 	
-	var _react = __webpack_require__(298);
+	var _redux = __webpack_require__(478);
 	
-	var _react2 = _interopRequireDefault(_react);
+	var _constants = __webpack_require__(496);
 	
-	var _Overview = __webpack_require__(501);
+	function createPersistentStore(reducer) {
+	  var localData = localStorage.getItem(_constants.STORAGE_KEY);
+	  var persistedState = localData ? JSON.parse(localData) : {};
 	
-	var _Overview2 = _interopRequireDefault(_Overview);
+	  var store = (0, _redux.createStore)(reducer, persistedState);
 	
-	var _Editor = __webpack_require__(502);
+	  store.subscribe(function () {
+	    var state = store.getState();
+	    console.log(state);
+	    localStorage.setItem(_constants.STORAGE_KEY, JSON.stringify(state));
+	  });
 	
-	var _Editor2 = _interopRequireDefault(_Editor);
+	  return store;
+	}
 	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var App = function App() {
-	  return _react2.default.createElement(
-	    'div',
-	    { className: 'calendar-app' },
-	    _react2.default.createElement(
-	      'h1',
-	      null,
-	      'Today\'s appointments'
-	    ),
-	    _react2.default.createElement(
-	      'div',
-	      { className: 'calendar-body' },
-	      _react2.default.createElement(_Overview2.default, null),
-	      _react2.default.createElement(_Editor2.default, null)
-	    )
-	  );
+	window.clearStorage = function () {
+	  localStorage.removeItem(_constants.STORAGE_KEY);
+	  window.location.reload();
 	};
-	
-	exports.default = App;
 
 /***/ },
 /* 501 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-	
-	var _react = __webpack_require__(298);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _reactRedux = __webpack_require__(471);
-	
-	var _constants = __webpack_require__(496);
-	
-	var _dateformat = __webpack_require__(510);
-	
-	var _dateformat2 = _interopRequireDefault(_dateformat);
-	
-	var _leftPad = __webpack_require__(499);
-	
-	var _leftPad2 = _interopRequireDefault(_leftPad);
-	
-	var _Appointment = __webpack_require__(511);
-	
-	var _Appointment2 = _interopRequireDefault(_Appointment);
-	
-	var _values = __webpack_require__(512);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } } // :D
-	
-	
-	var ONE_HOUR_HEIGHT = parseInt(_values.timeNodeHeight, 10);
-	
-	var timeListLength = _constants.TIME_RANGE_MAX - _constants.TIME_RANGE_MIN + 1;
-	var timeList = Array.from({ length: timeListLength }).map(function (_, index) {
-	  var hour = _constants.TIME_RANGE_MIN + index;
-	  return (0, _leftPad2.default)(hour, 2, 0) + ':00';
-	});
-	
-	function groupByOverlap() {
-	  var currentEndTime = null;
-	  return function (prev, curr) {
-	    if (currentEndTime === null) {
-	      currentEndTime = curr.endTime;
-	      return [[curr]];
-	    }
-	
-	    if (currentEndTime > curr.startTime) {
-	      prev[prev.length - 1].push(curr);
-	    } else {
-	      prev.push([curr]);
-	    }
-	
-	    if (currentEndTime < curr.endTime) {
-	      currentEndTime = curr.endTime;
-	    }
-	
-	    return prev;
-	  };
-	}
-	
-	function calculateGaps() {
-	  var previousEndTime = _constants.TIME_RANGE_MIN * 60;
-	  return function (group) {
-	    var groupStartTime = group[0].startTime;
-	    var topGapTime = groupStartTime - previousEndTime;
-	    var marginTop = topGapTime / 60 * ONE_HOUR_HEIGHT;
-	    previousEndTime = Math.max.apply(Math, _toConsumableArray(group.map(function (_ref) {
-	      var endTime = _ref.endTime;
-	      return endTime;
-	    })));
-	    return {
-	      marginTop: marginTop,
-	      appointments: group.map(function (data) {
-	        return Object.assign({}, data, {
-	          marginTop: (data.startTime - groupStartTime) / 60 * ONE_HOUR_HEIGHT,
-	          height: (data.endTime - data.startTime) / 60 * ONE_HOUR_HEIGHT
-	        });
-	      })
-	    };
-	  };
-	}
-	
-	var Overview = function Overview(_ref2) {
-	  var appointments = _ref2.appointments;
-	
-	  var now = new Date();
-	  var today = (0, _dateformat2.default)(now, 'd mmmm yyyy').toLowerCase();
-	
-	  var appointmentsGroupedByOverlap = appointments.sort(function (_ref3, _ref4) {
-	    var a = _ref3.startTime;
-	    var b = _ref4.startTime;
-	    return a - b;
-	  }).reduce(groupByOverlap(), []).map(calculateGaps());
-	
-	  return _react2.default.createElement(
-	    'div',
-	    { className: 'overview' },
-	    _react2.default.createElement(
-	      'header',
-	      null,
-	      today
-	    ),
-	    _react2.default.createElement(
-	      'article',
-	      null,
-	      _react2.default.createElement(
-	        'ul',
-	        null,
-	        timeList.map(function (text, index) {
-	          return _react2.default.createElement(
-	            'li',
-	            { key: index },
-	            text
-	          );
-	        })
-	      ),
-	      _react2.default.createElement(
-	        'div',
-	        { className: 'appointment-container' },
-	        appointmentsGroupedByOverlap.map(function (_ref5, index) {
-	          var appointments = _ref5.appointments;
-	          var marginTop = _ref5.marginTop;
-	          return _react2.default.createElement(
-	            'div',
-	            { key: index, className: 'appointment-group', style: { marginTop: marginTop } },
-	            appointments.map(function (data, index) {
-	              return _react2.default.createElement(_Appointment2.default, _extends({ key: index }, data));
-	            })
-	          );
-	        })
-	      )
-	    )
-	  );
-	};
-	
-	var mapStateToProps = function mapStateToProps(_ref6) {
-	  var appointments = _ref6.appointments;
-	
-	  return {
-	    appointments: appointments
-	  };
-	};
-	
-	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-	  return {
-	    onTodoClick: function onTodoClick(id) {
-	      //dispatch(toggleTodo(id))
-	    }
-	  };
-	};
-	
-	Overview = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(Overview);
-	
-	exports.default = Overview;
-
-/***/ },
-/* 502 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _react = __webpack_require__(298);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _reactRedux = __webpack_require__(471);
-	
-	var _actions = __webpack_require__(503);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var Editor = function Editor(_ref) {
-	  var dispatch = _ref.dispatch;
-	
-	  var form = {};
-	  var saveRef = function saveRef(key) {
-	    return function (ref) {
-	      form[key] = ref;
-	    };
-	  };
-	
-	  var onSubmit = function onSubmit(event) {
-	    event.preventDefault();
-	
-	    var formKeys = Object.keys(form);
-	
-	    var isEveryFieldValid = formKeys.every(function (key) {
-	      return form[key].value.trim() !== '';
-	    });
-	
-	    if (!isEveryFieldValid) {
-	      return;
-	    }
-	
-	    var formData = formKeys.reduce(function (output, key) {
-	      output[key] = form[key].value;
-	      return output;
-	    }, {});
-	
-	    dispatch((0, _actions.addAppointment)(formData));
-	
-	    formKeys.forEach(function (key) {
-	      form[key].value = '';
-	    });
-	  };
-	
-	  return _react2.default.createElement(
-	    'form',
-	    {
-	      className: 'editor',
-	      onSubmit: onSubmit
-	    },
-	    _react2.default.createElement(
-	      'label',
-	      null,
-	      'Title',
-	      _react2.default.createElement('br', null),
-	      _react2.default.createElement('input', { ref: saveRef('title'), required: true })
-	    ),
-	    _react2.default.createElement(
-	      'label',
-	      null,
-	      'Start time',
-	      _react2.default.createElement('br', null),
-	      _react2.default.createElement('input', { type: 'time', ref: saveRef('startTime'), required: true })
-	    ),
-	    _react2.default.createElement(
-	      'label',
-	      null,
-	      'End time',
-	      _react2.default.createElement('br', null),
-	      _react2.default.createElement('input', { type: 'time', ref: saveRef('endTime'), required: true })
-	    ),
-	    _react2.default.createElement(
-	      'label',
-	      null,
-	      'Description',
-	      _react2.default.createElement('br', null),
-	      _react2.default.createElement('textarea', { ref: saveRef('description'), required: true })
-	    ),
-	    _react2.default.createElement(
-	      'button',
-	      { type: 'submit' },
-	      'Save'
-	    ),
-	    _react2.default.createElement(
-	      'button',
-	      { type: 'reset' },
-	      'Cancel'
-	    )
-	  );
-	};
-	
-	Editor = (0, _reactRedux.connect)()(Editor);
-	
-	exports.default = Editor;
-
-/***/ },
-/* 503 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.addAppointment = undefined;
-	
-	var _constants = __webpack_require__(496);
-	
-	var addAppointment = exports.addAppointment = function addAppointment(appointment) {
-	  var title = appointment.title;
-	  var startTime = appointment.startTime;
-	  var endTime = appointment.endTime;
-	  var description = appointment.description;
-	
-	  return {
-	    type: _constants.ActionTypes.ADD_APPOINTMENT,
-	    id: Date.now(),
-	    title: title,
-	    startTime: startTime,
-	    endTime: endTime,
-	    description: description
-	  };
-	};
-
-/***/ },
-/* 504 */
-/***/ function(module, exports, __webpack_require__) {
-
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 	
 	// load the styles
-	var content = __webpack_require__(505);
+	var content = __webpack_require__(502);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(509)(content, {});
+	var update = __webpack_require__(506)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(false) {
@@ -31580,21 +31283,21 @@
 	}
 
 /***/ },
-/* 505 */
+/* 502 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(506)();
+	exports = module.exports = __webpack_require__(503)();
 	// imports
 	
 	
 	// module
-	exports.push([module.id, "html, body, ul, ol {\n  margin: 0;\n  padding: 0; }\n\nul, ol {\n  list-style: none; }\n\nhtml {\n  box-sizing: border-box; }\n\n*, *:before, *:after {\n  box-sizing: inherit; }\n\n@font-face {\n  font-family: 'OpenSans';\n  font-style: normal;\n  font-weight: 300;\n  src: url(" + __webpack_require__(507) + ") format(\"truetype\"); }\n\nbody {\n  background: #4a526f;\n  font-family: 'OpenSans', sans-serif; }\n\n.calendar-app {\n  margin: 0 auto 40px;\n  padding: 12px;\n  min-width: 780px;\n  max-width: 1000px; }\n  .calendar-app > h1 {\n    color: white;\n    font-size: 29px;\n    letter-spacing: 1px;\n    margin-bottom: 30px; }\n  .calendar-app .calendar-body {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex; }\n\n.overview {\n  border-radius: 4px;\n  background: white;\n  color: #111;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  -webkit-box-flex: 5;\n      -ms-flex: 5;\n          flex: 5;\n  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.13), 0 18px 30px 0 rgba(0, 0, 0, 0.13);\n  z-index: 100; }\n  .overview > header {\n    border-bottom: 1px solid #e7e7e7;\n    font-size: 20px;\n    padding: 16.8px 39px;\n    letter-spacing: 0.3px; }\n  .overview > article {\n    padding: 12px;\n    color: #dadada;\n    position: relative;\n    overflow: hidden; }\n    .overview > article .appointment-container {\n      position: absolute;\n      top: 0;\n      width: 81%;\n      left: 86px;\n      padding-top: 19px; }\n      .overview > article .appointment-container .appointment-group {\n        display: -webkit-box;\n        display: -ms-flexbox;\n        display: flex; }\n    .overview > article ul {\n      margin-left: 30px;\n      font-size: 12px; }\n      .overview > article ul li {\n        height: 18px;\n        margin-bottom: 36px;\n        background: white; }\n        .overview > article ul li::after {\n          border-bottom: 1px solid #dadada;\n          content: '';\n          position: relative;\n          top: -9px;\n          left: 41px;\n          width: 88%;\n          display: block; }\n\n.editor {\n  border-bottom-right-radius: 4px;\n  border-top-right-radius: 4px;\n  background: #f8f8f8;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-flex: 2;\n      -ms-flex: 2;\n          flex: 2;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  padding: 12px;\n  margin: 20px 0;\n  max-width: 233px; }\n  .editor label {\n    margin: 9px 7px 0 7px;\n    font-size: 14px;\n    letter-spacing: 0.3px; }\n  .editor input, .editor textarea {\n    width: 100%;\n    border: 1px solid #dadada;\n    border-radius: 1px;\n    font-size: 20px;\n    color: #919191;\n    margin-top: 5px;\n    padding: 1px 5px; }\n  .editor input {\n    height: 35px; }\n  .editor input[type=\"time\"] {\n    padding-left: 40px;\n    background: url(" + __webpack_require__(508) + ") white no-repeat 10px; }\n  .editor textarea {\n    resize: none;\n    height: 105px; }\n  .editor input, .editor button, .editor textarea {\n    outline: 0; }\n    .editor input:focus, .editor button:focus, .editor textarea:focus {\n      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); }\n  .editor button {\n    padding: 12px;\n    margin: 8px 7px -4px;\n    border-radius: 4px;\n    font-size: 13px;\n    text-decoration: none;\n    cursor: pointer;\n    border: none;\n    letter-spacing: 0.3px;\n    -webkit-transition: background-color 0.1s;\n    transition: background-color 0.1s; }\n    .editor button[type=\"submit\"] {\n      background: #20c576;\n      color: white; }\n      .editor button[type=\"submit\"]:active {\n        background: #19995c; }\n    .editor button[type=\"reset\"] {\n      background: #dadada;\n      color: #111; }\n      .editor button[type=\"reset\"]:active {\n        background: #c1c1c1; }\n\n.appointment {\n  background: #f65f52;\n  border-radius: 4px;\n  padding: 6px 12px;\n  overflow: hidden;\n  position: relative;\n  -webkit-box-flex: 1;\n      -ms-flex: 1;\n          flex: 1; }\n  .appointment::after {\n    content: ' ';\n    box-shadow: 0 14px 10px 22px #f65f52;\n    display: block;\n    height: 5px;\n    position: absolute;\n    width: 100%;\n    bottom: -5px;\n    left: 0; }\n  .appointment + .appointment {\n    margin-left: 5px; }\n  .appointment h1 {\n    margin: 0;\n    font-size: 16px;\n    max-width: 70%;\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    float: left;\n    color: white; }\n  .appointment .time {\n    float: right; }\n  .appointment p.description {\n    margin: 5px 0; }\n", ""]);
+	exports.push([module.id, "html, body, ul, ol {\n  margin: 0;\n  padding: 0; }\n\nul, ol {\n  list-style: none; }\n\nhtml {\n  box-sizing: border-box; }\n\n*, *:before, *:after {\n  box-sizing: inherit; }\n\n@font-face {\n  font-family: 'OpenSans';\n  font-style: normal;\n  font-weight: 300;\n  src: url(" + __webpack_require__(504) + ") format(\"truetype\"); }\n\nbody {\n  background: #4a526f;\n  font-family: 'OpenSans', sans-serif; }\n\n.calendar-app {\n  margin: 0 auto 40px;\n  padding: 12px;\n  min-width: 780px;\n  max-width: 1000px; }\n  .calendar-app > h1 {\n    color: white;\n    font-size: 29px;\n    letter-spacing: 1px;\n    margin-bottom: 30px; }\n  .calendar-app .calendar-body {\n    display: -webkit-box;\n    display: -ms-flexbox;\n    display: flex; }\n\n.overview {\n  border-radius: 4px;\n  background: white;\n  color: #111;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  -webkit-box-flex: 5;\n      -ms-flex: 5;\n          flex: 5;\n  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.13), 0 18px 30px 0 rgba(0, 0, 0, 0.13);\n  z-index: 100; }\n  .overview > header {\n    border-bottom: 1px solid #e7e7e7;\n    font-size: 20px;\n    padding: 16.8px 39px;\n    letter-spacing: 0.3px; }\n  .overview > article {\n    padding: 12px;\n    color: #dadada;\n    position: relative;\n    overflow: hidden; }\n    .overview > article ul {\n      margin-left: 30px;\n      font-size: 12px;\n      -webkit-user-select: none;\n         -moz-user-select: none;\n          -ms-user-select: none;\n              user-select: none;\n      cursor: default; }\n      .overview > article ul li {\n        height: 18px;\n        margin-bottom: 36px;\n        background: white; }\n        .overview > article ul li::after {\n          border-bottom: 1px solid #dadada;\n          content: '';\n          position: relative;\n          top: -9px;\n          left: 41px;\n          width: 88%;\n          display: block; }\n\n.editor {\n  border-bottom-right-radius: 4px;\n  border-top-right-radius: 4px;\n  background: #f8f8f8;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-flex: 2;\n      -ms-flex: 2;\n          flex: 2;\n  -webkit-box-orient: vertical;\n  -webkit-box-direction: normal;\n      -ms-flex-direction: column;\n          flex-direction: column;\n  padding: 12px;\n  margin: 20px 0;\n  max-width: 233px; }\n  .editor label {\n    margin: 9px 7px 0 7px;\n    font-size: 14px;\n    letter-spacing: 0.3px; }\n  .editor input, .editor textarea {\n    width: 100%;\n    border: 1px solid #dadada;\n    border-radius: 1px;\n    font-size: 20px;\n    color: #919191;\n    margin-top: 5px;\n    padding: 1px 5px; }\n  .editor input {\n    height: 35px; }\n  .editor input[type=\"time\"] {\n    padding-left: 40px;\n    background: url(" + __webpack_require__(505) + ") white no-repeat 10px; }\n  .editor textarea {\n    resize: none;\n    height: 105px; }\n  .editor input, .editor button, .editor textarea {\n    outline: 0; }\n    .editor input:focus, .editor button:focus, .editor textarea:focus {\n      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24); }\n  .editor button {\n    padding: 12px;\n    margin: 8px 7px -4px;\n    border-radius: 4px;\n    font-size: 13px;\n    text-decoration: none;\n    cursor: pointer;\n    border: none;\n    letter-spacing: 0.3px;\n    -webkit-transition: background-color 0.1s;\n    transition: background-color 0.1s; }\n    .editor button[type=\"submit\"] {\n      background: #20c576;\n      color: white; }\n      .editor button[type=\"submit\"]:active {\n        background: #19995c; }\n    .editor button[type=\"reset\"] {\n      background: #dadada;\n      color: #111; }\n      .editor button[type=\"reset\"]:active {\n        background: #c1c1c1; }\n\n.appointment-container {\n  position: absolute;\n  top: 0;\n  width: 81%;\n  left: 83px;\n  padding-top: 19px; }\n\n.appointment-group {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex; }\n\n.appointment {\n  background: #f65f52;\n  border-radius: 4px;\n  border: 1px solid white;\n  padding: 6px 12px;\n  overflow: hidden;\n  position: relative;\n  -webkit-box-flex: 1;\n      -ms-flex: 1;\n          flex: 1;\n  cursor: pointer;\n  color: inherit;\n  text-decoration: none;\n  min-height: 30px; }\n  .appointment::after {\n    content: ' ';\n    box-shadow: 0 14px 10px 22px #f65f52;\n    display: block;\n    height: 5px;\n    position: absolute;\n    width: 100%;\n    bottom: -5px;\n    left: 0; }\n  .appointment h1 {\n    margin: 0;\n    font-size: 16px;\n    max-width: 70%;\n    white-space: nowrap;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    float: left;\n    color: white; }\n  .appointment .time {\n    float: right; }\n  .appointment p.description {\n    margin: 5px 0; }\n", ""]);
 	
 	// exports
 
 
 /***/ },
-/* 506 */
+/* 503 */
 /***/ function(module, exports) {
 
 	/*
@@ -31650,19 +31353,19 @@
 
 
 /***/ },
-/* 507 */
+/* 504 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "resources/OpenSans-Light.ttf";
 
 /***/ },
-/* 508 */
+/* 505 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "resources/calendar.svg";
 
 /***/ },
-/* 509 */
+/* 506 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -31914,7 +31617,288 @@
 
 
 /***/ },
-/* 510 */
+/* 507 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(298);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _Overview = __webpack_require__(508);
+	
+	var _Overview2 = _interopRequireDefault(_Overview);
+	
+	var _Editor = __webpack_require__(512);
+	
+	var _Editor2 = _interopRequireDefault(_Editor);
+	
+	var _reactRedux = __webpack_require__(471);
+	
+	var _actions = __webpack_require__(513);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	function getDefaultEditor() {
+	  var date = new Date();
+	  return {
+	    id: date.getTime(),
+	    title: '',
+	    startTime: (date.getHours() + 1) * 60,
+	    endTime: (date.getHours() + 2) * 60,
+	    description: ''
+	  };
+	}
+	
+	var App = function (_Component) {
+	  _inherits(App, _Component);
+	
+	  function App() {
+	    var _Object$getPrototypeO;
+	
+	    var _temp, _this, _ret;
+	
+	    _classCallCheck(this, App);
+	
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+	
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(App)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.state = {
+	      editor: getDefaultEditor()
+	    }, _this.editorSave = function () {
+	      _this.props.dispatch((0, _actions.addAppointment)(_this.state.editor));
+	      _this.setState({
+	        editor: getDefaultEditor()
+	      });
+	    }, _this.editorDelete = function (id) {
+	      _this.props.dispatch((0, _actions.removeAppointment)(id));
+	      _this.setState({
+	        editor: getDefaultEditor()
+	      });
+	    }, _this.setEditor = function (editor) {
+	      _this.setState({
+	        editor: editor
+	      });
+	    }, _this.editorChange = function (key) {
+	      return function (event) {
+	        _this.setState({
+	          editor: Object.assign({}, _this.state.editor, _defineProperty({}, key, event.target.value))
+	        });
+	      };
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
+	  }
+	
+	  _createClass(App, [{
+	    key: 'render',
+	    value: function render() {
+	      var appointments = this.props.appointments;
+	      var editor = this.state.editor;
+	
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'calendar-app' },
+	        _react2.default.createElement(
+	          'h1',
+	          null,
+	          'Today\'s appointments'
+	        ),
+	        _react2.default.createElement(
+	          'div',
+	          { className: 'calendar-body' },
+	          _react2.default.createElement(_Overview2.default, {
+	            appointments: appointments,
+	            onSelect: this.setEditor
+	          }),
+	          _react2.default.createElement(_Editor2.default, _extends({}, editor, {
+	            onChange: this.editorChange,
+	            onSave: this.editorSave,
+	            onCancel: this.editorDelete
+	          }))
+	        )
+	      );
+	    }
+	  }]);
+	
+	  return App;
+	}(_react.Component);
+	
+	var mapStateToProps = function mapStateToProps(_ref) {
+	  var appointments = _ref.appointments;
+	
+	  return {
+	    appointments: appointments
+	  };
+	};
+	
+	App = (0, _reactRedux.connect)(mapStateToProps)(App);
+	
+	exports.default = App;
+
+/***/ },
+/* 508 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+	
+	var _react = __webpack_require__(298);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _constants = __webpack_require__(496);
+	
+	var _dateformat = __webpack_require__(509);
+	
+	var _dateformat2 = _interopRequireDefault(_dateformat);
+	
+	var _leftPad = __webpack_require__(499);
+	
+	var _leftPad2 = _interopRequireDefault(_leftPad);
+	
+	var _Appointment = __webpack_require__(510);
+	
+	var _Appointment2 = _interopRequireDefault(_Appointment);
+	
+	var _values = __webpack_require__(511);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } } // :D
+	
+	
+	var ONE_HOUR_HEIGHT = parseInt(_values.timeNodeHeight, 10);
+	
+	var timeListLength = _constants.TIME_RANGE_MAX - _constants.TIME_RANGE_MIN + 1;
+	var timeList = Array.from({ length: timeListLength }).map(function (_, index) {
+	  var hour = _constants.TIME_RANGE_MIN + index;
+	  return (0, _leftPad2.default)(hour, 2, 0) + ':00';
+	});
+	
+	function groupByOverlap() {
+	  var currentEndTime = null;
+	  return function (prev, curr) {
+	    if (currentEndTime === null) {
+	      currentEndTime = curr.endTime;
+	      return [[curr]];
+	    }
+	
+	    if (currentEndTime > curr.startTime) {
+	      prev[prev.length - 1].push(curr);
+	    } else {
+	      prev.push([curr]);
+	    }
+	
+	    if (currentEndTime < curr.endTime) {
+	      currentEndTime = curr.endTime;
+	    }
+	
+	    return prev;
+	  };
+	}
+	
+	function calculateGaps() {
+	  var previousEndTime = _constants.TIME_RANGE_MIN * 60;
+	  return function (group) {
+	    var groupStartTime = group[0].startTime;
+	    var topGapTime = groupStartTime - previousEndTime;
+	    var marginTop = topGapTime / 60 * ONE_HOUR_HEIGHT;
+	    previousEndTime = Math.max.apply(Math, _toConsumableArray(group.map(function (_ref) {
+	      var endTime = _ref.endTime;
+	      return endTime;
+	    })));
+	    return {
+	      marginTop: marginTop,
+	      appointments: group.map(function (data) {
+	        return Object.assign({}, data, {
+	          marginTop: (data.startTime - groupStartTime) / 60 * ONE_HOUR_HEIGHT,
+	          height: (data.endTime - data.startTime) / 60 * ONE_HOUR_HEIGHT
+	        });
+	      })
+	    };
+	  };
+	}
+	
+	var Overview = function Overview(_ref2) {
+	  var appointments = _ref2.appointments;
+	  var onSelect = _ref2.onSelect;
+	
+	  var now = new Date();
+	  var today = (0, _dateformat2.default)(now, 'd mmmm yyyy').toLowerCase();
+	
+	  var appointmentsGroupedByOverlap = appointments.sort(function (_ref3, _ref4) {
+	    var a = _ref3.startTime;
+	    var b = _ref4.startTime;
+	    return a - b;
+	  }).reduce(groupByOverlap(), []).map(calculateGaps());
+	
+	  return _react2.default.createElement(
+	    'div',
+	    { className: 'overview' },
+	    _react2.default.createElement(
+	      'header',
+	      null,
+	      today
+	    ),
+	    _react2.default.createElement(
+	      'article',
+	      null,
+	      _react2.default.createElement(
+	        'ul',
+	        null,
+	        timeList.map(function (text, index) {
+	          return _react2.default.createElement(
+	            'li',
+	            { key: index },
+	            text
+	          );
+	        })
+	      ),
+	      _react2.default.createElement(
+	        'div',
+	        { className: 'appointment-container' },
+	        appointmentsGroupedByOverlap.map(function (_ref5, index) {
+	          var appointments = _ref5.appointments;
+	          var marginTop = _ref5.marginTop;
+	          return _react2.default.createElement(
+	            'div',
+	            { key: index, className: 'appointment-group', style: { marginTop: marginTop } },
+	            appointments.map(function (data, index) {
+	              return _react2.default.createElement(_Appointment2.default, _extends({ key: index }, data, { onSelect: onSelect }));
+	            })
+	          );
+	        })
+	      )
+	    )
+	  );
+	};
+	
+	exports.default = Overview;
+
+/***/ },
+/* 509 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*
@@ -32146,7 +32130,7 @@
 
 
 /***/ },
-/* 511 */
+/* 510 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -32164,19 +32148,29 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var Appointment = function Appointment(_ref) {
+	  var id = _ref.id;
 	  var title = _ref.title;
 	  var startTime = _ref.startTime;
 	  var endTime = _ref.endTime;
 	  var description = _ref.description;
 	  var marginTop = _ref.marginTop;
 	  var height = _ref.height;
+	  var onSelect = _ref.onSelect;
 	
 	  var start = (0, _utils.integerTimeToString)(startTime);
 	  var end = (0, _utils.integerTimeToString)(endTime);
 	  var time = start + ' - ' + end;
 	  return _react2.default.createElement(
-	    'div',
-	    { className: 'appointment', style: { marginTop: marginTop, height: height } },
+	    'a',
+	    {
+	      href: '#',
+	      className: 'appointment',
+	      style: { marginTop: marginTop, height: height },
+	      onClick: function onClick(event) {
+	        event.preventDefault();
+	        onSelect({ id: id, title: title, startTime: startTime, endTime: endTime, description: description });
+	      }
+	    },
 	    _react2.default.createElement(
 	      'h1',
 	      null,
@@ -32199,10 +32193,115 @@
 	exports.default = Appointment;
 
 /***/ },
-/* 512 */
+/* 511 */
 /***/ function(module, exports) {
 
 	module.exports={"blue":"#4a526f","green":"#20c576","red":"#f65f52","black":"#111","lightGray":"#f8f8f8","darkGray":"#dadada","margin":"20px","padding":"12px","borderRadius":"4px","borderRadiusSmall":"1px","inputHeight":"35px","timeNodeBase":"18px","timeNodeGap":"36px","timeNodeHeight":"54px"}
+
+/***/ },
+/* 512 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _react = __webpack_require__(298);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _utils = __webpack_require__(498);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var Editor = function Editor(_ref) {
+	  var onChange = _ref.onChange;
+	  var onSave = _ref.onSave;
+	  var onCancel = _ref.onCancel;
+	  var id = _ref.id;
+	  var title = _ref.title;
+	  var startTime = _ref.startTime;
+	  var endTime = _ref.endTime;
+	  var description = _ref.description;
+	
+	  console.log(startTime);
+	  var onSubmit = function onSubmit(event) {
+	    event.preventDefault();
+	    onSave();
+	  };
+	
+	  return _react2.default.createElement(
+	    'form',
+	    {
+	      className: 'editor',
+	      onSubmit: onSubmit,
+	      onReset: function onReset() {
+	        return onCancel(id);
+	      }
+	    },
+	    _react2.default.createElement(
+	      'label',
+	      null,
+	      'Title',
+	      _react2.default.createElement('br', null),
+	      _react2.default.createElement('input', {
+	        type: 'text',
+	        value: title,
+	        onChange: onChange('title'),
+	        required: true
+	      })
+	    ),
+	    _react2.default.createElement(
+	      'label',
+	      null,
+	      'Start time',
+	      _react2.default.createElement('br', null),
+	      _react2.default.createElement('input', {
+	        type: 'time',
+	        value: (0, _utils.integerTimeToString)(startTime),
+	        onChange: onChange('startTime'),
+	        required: true
+	      })
+	    ),
+	    _react2.default.createElement(
+	      'label',
+	      null,
+	      'End time',
+	      _react2.default.createElement('br', null),
+	      _react2.default.createElement('input', {
+	        type: 'time',
+	        value: (0, _utils.integerTimeToString)(endTime),
+	        onChange: onChange('endTime'),
+	        required: true
+	      })
+	    ),
+	    _react2.default.createElement(
+	      'label',
+	      null,
+	      'Description',
+	      _react2.default.createElement('br', null),
+	      _react2.default.createElement('textarea', {
+	        onChange: onChange('description'),
+	        required: true,
+	        value: description
+	      })
+	    ),
+	    _react2.default.createElement(
+	      'button',
+	      { type: 'submit' },
+	      'Save'
+	    ),
+	    _react2.default.createElement(
+	      'button',
+	      { type: 'reset' },
+	      id ? 'Delete' : 'Cancel'
+	    )
+	  );
+	};
+	
+	exports.default = Editor;
 
 /***/ },
 /* 513 */
@@ -32213,30 +32312,31 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.createPersistentStore = createPersistentStore;
-	
-	var _redux = __webpack_require__(478);
+	exports.removeAppointment = exports.addAppointment = undefined;
 	
 	var _constants = __webpack_require__(496);
 	
-	function createPersistentStore(reducer) {
-	  var localData = localStorage.getItem(_constants.STORAGE_KEY);
-	  var persistedState = localData ? JSON.parse(localData) : {};
+	var addAppointment = exports.addAppointment = function addAppointment(appointment) {
+	  var title = appointment.title;
+	  var startTime = appointment.startTime;
+	  var endTime = appointment.endTime;
+	  var description = appointment.description;
 	
-	  var store = (0, _redux.createStore)(reducer, persistedState);
+	  return {
+	    type: _constants.ActionTypes.ADD_APPOINTMENT,
+	    id: Date.now(),
+	    title: title,
+	    startTime: startTime,
+	    endTime: endTime,
+	    description: description
+	  };
+	};
 	
-	  store.subscribe(function () {
-	    var state = store.getState();
-	    console.log(state);
-	    localStorage.setItem(_constants.STORAGE_KEY, JSON.stringify(state));
-	  });
-	
-	  return store;
-	}
-	
-	window.clearStorage = function () {
-	  localStorage.removeItem(_constants.STORAGE_KEY);
-	  window.location.reload();
+	var removeAppointment = exports.removeAppointment = function removeAppointment(id) {
+	  return {
+	    type: _constants.ActionTypes.REMOVE_APPOINTMENT,
+	    id: id
+	  };
 	};
 
 /***/ }

@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { TIME_RANGE_MIN, TIME_RANGE_MAX } from '../constants';
 import dateFormat from 'dateformat';
 import leftPad from 'left-pad'; // :D
@@ -55,7 +54,7 @@ function calculateGaps() {
   }
 }
 
-let Overview = ({ appointments }) => {
+const Overview = ({ appointments, onSelect }) => {
   const now = new Date();
   const today = dateFormat(now, 'd mmmm yyyy').toLowerCase();
 
@@ -75,7 +74,7 @@ let Overview = ({ appointments }) => {
           {appointmentsGroupedByOverlap.map(({ appointments, marginTop }, index) => (
             <div key={index} className="appointment-group" style={{ marginTop }}>
               {appointments.map((data, index) => (
-                <Appointment key={index} {...data} />
+                <Appointment key={index} {...data} onSelect={onSelect} />
               ))}
             </div>
           ))}
@@ -84,24 +83,5 @@ let Overview = ({ appointments }) => {
     </div>
   );
 };
-
-const mapStateToProps = ({ appointments }) => {
-  return {
-    appointments,
-  }
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    onTodoClick: (id) => {
-      //dispatch(toggleTodo(id))
-    }
-  }
-};
-
-Overview = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Overview);
 
 export default Overview;

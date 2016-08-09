@@ -11,3 +11,10 @@ export const addAppointment = appointment => {
     description,
   }
 };
+
+export const removeAppointment = id => {
+  return {
+    type: AT.REMOVE_APPOINTMENT,
+    id,
+  }
+};
