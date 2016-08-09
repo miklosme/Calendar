@@ -1,9 +1,9 @@
 import React from 'react';
-import { TIME_RANGE_MIN, TIME_RANGE_MAX } from '../constants';
+import {TIME_RANGE_MIN, TIME_RANGE_MAX} from '../constants';
 import dateFormat from 'dateformat';
 import leftPad from 'left-pad'; // :D
 import Appointment from '../components/Appointment';
-import { timeNodeHeight } from '../../style/values.scss';
+import {timeNodeHeight} from '../../style/values.scss';
 
 const ONE_HOUR_HEIGHT = parseInt(timeNodeHeight, 10);
 
@@ -82,7 +82,7 @@ const Overview = ({ appointments, onSelect }) => {
           {appointmentsGroupedByOverlap.map(({ appointments, marginTop }, index) => (
             <div key={index} className="appointment-group" style={{ marginTop }}>
               {appointments.map((data, index) => (
-                <Appointment key={index} {...data} onSelect={onSelect} />
+                <Appointment key={index} {...data} onSelect={onSelect}/>
               ))}
             </div>
           ))}

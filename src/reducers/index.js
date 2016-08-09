@@ -1,4 +1,4 @@
-import { combineReducers } from 'redux';
+import {combineReducers} from 'redux';
 import appointments from './appointments';
 
 const calendarApp = combineReducers({

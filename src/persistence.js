@@ -1,5 +1,5 @@
-import { createStore } from 'redux';
-import { STORAGE_KEY } from './constants';
+import {createStore} from 'redux';
+import {STORAGE_KEY} from './constants';
 
 export function createPersistentStore(reducer) {
   const localData = localStorage.getItem(STORAGE_KEY);
