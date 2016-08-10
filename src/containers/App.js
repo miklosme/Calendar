@@ -67,6 +67,7 @@ class App extends Component {
           <Overview
             appointments={appointments}
             onSelect={this.editorSet}
+            selectedId={editor.id}
           />
           <Editor
             values={editor}

@@ -1,15 +1,20 @@
 import React from 'react';
 import {integerTimeToString} from '../utils';
+import classNames from 'classnames';
 
-const Appointment = ({ values, onSelect }) => {
+const Appointment = ({ values, onSelect, isSelected }) => {
   const { title, startTime, endTime, description, marginTop, height } = values;
   const start = integerTimeToString(startTime);
   const end = integerTimeToString(endTime);
   const time = `${start} - ${end}`;
+  const className = classNames({
+    'appointment': true,
+    'selected': isSelected,
+  });
   return (
     <a
       href="#"
-      className="appointment"
+      className={className}
       style={{ marginTop, height }}
       onClick={event => {
         event.preventDefault();

@@ -62,7 +62,7 @@ function stableSortByStart(a, b) {
   return a.startTime - b.startTime;
 }
 
-const Overview = ({ appointments, onSelect }) => {
+const Overview = ({ appointments, onSelect, selectedId }) => {
   const now = new Date();
   const today = dateFormat(now, 'd mmmm yyyy').toLowerCase();
 
@@ -71,10 +71,18 @@ const Overview = ({ appointments, onSelect }) => {
     .reduce(groupByOverlap(), [])
     .map(calculateGaps());
 
+  let container;
+  const selectFirstAppointment = () => {
+    const first = container.querySelector('.appointment');
+    if (first) {
+      first.focus();
+    }
+  };
+
   return (
     <div className="overview" onClick={() => onSelect(null)}>
       <header>{today}</header>
-      <article>
+      <article ref={x => container = x}>
         <ul>
           {timeList.map((text, index) => <li key={index}>{text}</li>)}
         </ul>
@@ -86,12 +94,18 @@ const Overview = ({ appointments, onSelect }) => {
                   key={index}
                   values={data}
                   onSelect={onSelect}
+                  isSelected={selectedId === data.id}
                 />
               ))}
             </div>
           ))}
         </div>
       </article>
+      <a
+        href="#"
+        onFocus={selectFirstAppointment}
+        onClick={event => event.preventDefault()}
+      />
     </div>
   );
 };

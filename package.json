@@ -19,13 +19,6 @@
     "url": "https://github.com/CAPSLOCKUSER/Calendar/issues"
   },
   "homepage": "https://github.com/CAPSLOCKUSER/Calendar#readme",
-  "dependencies": {
-    "babel-polyfill": "^6.9.1",
-    "react": "^15.3.0",
-    "react-dom": "^15.3.0",
-    "react-redux": "^4.4.5",
-    "redux": "^3.5.2"
-  },
   "devDependencies": {
     "autoprefixer-loader": "^3.2.0",
     "babel-core": "^6.11.4",
@@ -35,6 +28,7 @@
     "babel-polyfill": "^6.13.0",
     "babel-preset-es2015": "^6.9.0",
     "babel-preset-react": "^6.11.1",
+    "classnames": "^2.2.5",
     "css-loader": "^0.23.1",
     "dateformat": "^1.0.12",
     "file-loader": "^0.9.0",
@@ -42,7 +36,11 @@
     "keymirror": "^0.1.1",
     "left-pad": "^1.1.1",
     "node-sass": "^3.8.0",
+    "react": "^15.3.0",
+    "react-dom": "^15.3.0",
+    "react-redux": "^4.4.5",
     "react-test-renderer": "^15.3.0",
+    "redux": "^3.5.2",
     "rimraf": "^2.5.4",
     "sass-loader": "^4.0.0",
     "sass-to-js-var-loader": "0.0.2",
