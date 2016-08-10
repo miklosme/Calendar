@@ -57,7 +57,6 @@ const Editor = ({ onChange, onSave, onCancel, reset, values }) => {
         <br/>
         <textarea
           onChange={onChange('description')}
-          required
           value={description}
         />
       </label>
