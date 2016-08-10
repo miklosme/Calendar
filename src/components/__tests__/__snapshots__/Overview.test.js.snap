@@ -157,5 +157,9 @@ exports[`components/Overview renders correctly 1`] = `
       </div>
     </div>
   </article>
+  <a
+    href="#"
+    onClick={[Function onClick]}
+    onFocus={[Function selectFirstAppointment]} />
 </div>
 `;
