@@ -23,7 +23,7 @@
   cursor: pointer;
   color: inherit;
   text-decoration: none;
-  min-height: 30px;
+  min-height: $time-node-height / 2;
   outline: none;
 
   &:focus, &.selected {

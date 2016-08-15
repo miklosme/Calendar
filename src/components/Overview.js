@@ -38,19 +38,18 @@ function groupByOverlap() {
 function calculateGaps() {
   let previousEndTime = TIME_RANGE_MIN * 60;
   return group => {
-    const groupStartTime = group[0].startTime;
-    const topGapTime = groupStartTime - previousEndTime;
-    const marginTop = topGapTime / 60 * ONE_HOUR_HEIGHT;
-    previousEndTime = Math.max(...group.map(({ endTime }) => endTime));
-    return {
-      marginTop,
-      appointments: group.map(data => {
-        return Object.assign({}, data, {
-          marginTop: (data.startTime - groupStartTime) / 60 * ONE_HOUR_HEIGHT,
-          height: (data.endTime - data.startTime) / 60 * ONE_HOUR_HEIGHT,
-        });
-      }),
-    }
+    const result = group.map(data => {
+      const height = Math.max(30, (data.endTime - data.startTime) / 60 * ONE_HOUR_HEIGHT);
+      return {
+        data,
+        marginTop: (data.startTime - previousEndTime) / 60 * ONE_HOUR_HEIGHT,
+        height,
+      };
+    });
+
+    previousEndTime = Math.max(...result.map(({ data : { endTime } }) => endTime));
+
+    return result;
   }
 }
 
@@ -87,12 +86,13 @@ const Overview = ({ appointments, onSelect, selectedId }) => {
           {timeList.map((text, index) => <li key={index}>{text}</li>)}
         </ul>
         <div className="appointment-container">
-          {appointmentsGroupedByOverlap.map(({ appointments, marginTop }, index) => (
-            <div key={index} className="appointment-group" style={{ marginTop }}>
-              {appointments.map((data, index) => (
+          {appointmentsGroupedByOverlap.map((appointments, index) => (
+            <div key={index} className="appointment-group">
+              {appointments.map(({ data, marginTop, height }, index) => (
                 <Appointment
                   key={index}
                   values={data}
+                  style={{ marginTop, height }}
                   onSelect={onSelect}
                   isSelected={selectedId === data.id}
                 />

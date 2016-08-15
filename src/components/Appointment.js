@@ -2,8 +2,8 @@ import React from 'react';
 import {integerTimeToString} from '../utils';
 import classNames from 'classnames';
 
-const Appointment = ({ values, onSelect, isSelected }) => {
-  const { title, startTime, endTime, description, marginTop, height } = values;
+const Appointment = ({ values, style, onSelect, isSelected }) => {
+  const { title, startTime, endTime, description } = values;
   const start = integerTimeToString(startTime);
   const end = integerTimeToString(endTime);
   const time = `${start} - ${end}`;
@@ -15,7 +15,7 @@ const Appointment = ({ values, onSelect, isSelected }) => {
     <a
       href="#"
       className={className}
-      style={{ marginTop, height }}
+      style={style}
       onClick={event => {
         event.preventDefault();
         event.stopPropagation();
