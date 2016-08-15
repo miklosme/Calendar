@@ -44,12 +44,7 @@ exports[`components/Overview renders correctly 1`] = `
     <div
       className="appointment-container">
       <div
-        className="appointment-group"
-        style={
-          Object {
-            "marginTop": 0
-          }
-        }>
+        className="appointment-group">
         <a
           className="appointment"
           href="#"
@@ -57,7 +52,7 @@ exports[`components/Overview renders correctly 1`] = `
           onFocus={[Function onFocus]}
           style={
             Object {
-              "height": 15,
+              "height": 30,
               "marginTop": 0
             }
           }>
@@ -76,12 +71,7 @@ exports[`components/Overview renders correctly 1`] = `
         </a>
       </div>
       <div
-        className="appointment-group"
-        style={
-          Object {
-            "marginTop": 15
-          }
-        }>
+        className="appointment-group">
         <a
           className="appointment"
           href="#"
@@ -90,7 +80,7 @@ exports[`components/Overview renders correctly 1`] = `
           style={
             Object {
               "height": 225,
-              "marginTop": 0
+              "marginTop": 15
             }
           }>
           <h1>
@@ -114,7 +104,7 @@ exports[`components/Overview renders correctly 1`] = `
           style={
             Object {
               "height": 105,
-              "marginTop": 0
+              "marginTop": 15
             }
           }>
           <h1>
@@ -138,7 +128,7 @@ exports[`components/Overview renders correctly 1`] = `
           style={
             Object {
               "height": 128,
-              "marginTop": 157
+              "marginTop": 172
             }
           }>
           <h1>
